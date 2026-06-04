@@ -1,0 +1,121 @@
+<div class="export-grid">
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>Экспорт прошлой недели</h2>
+        <p>Загрузите Excel файл с почасовой выручкой. Система автоматически рассчитает факт по дням и часам.</p>
+      </div>
+    </div>
+
+    <div class="upload-box">
+      <input type="file" id="exportFileInput" accept=".xlsx,.xls" />
+
+      <div>
+        <strong>Формат файла</strong>
+        <p>Файл должен быть в формате “Почасовая выручка” с колонками: Учетный день, Час закрытия, Количество гостей, Сумма со скидкой.</p>
+      </div>
+    </div>
+
+    <p class="export-message" id="exportMessage"></p>
+  </div>
+
+  <div class="card" id="exportPreviewCard" style="display: none;">
+    <div class="section-head">
+      <div>
+        <h2>Результат импорта</h2>
+        <p>Проверьте данные перед сохранением в базу.</p>
+      </div>
+    </div>
+
+    <div class="export-summary">
+      <div>
+        <span>Файл</span>
+        <strong id="exportFileName">-</strong>
+      </div>
+
+      <div>
+        <span>Факт за период</span>
+        <strong id="exportPeriod">-</strong>
+      </div>
+
+      <div>
+        <span>Для планирования</span>
+        <strong id="exportPlanPeriod">-</strong>
+      </div>
+
+      <div>
+        <span>Итого ТО</span>
+        <strong id="exportTotalTo">0</strong>
+      </div>
+
+      <div>
+        <span>Итого GC</span>
+        <strong id="exportTotalGc">0</strong>
+      </div>
+
+      <div>
+        <span>Средний чек</span>
+        <strong id="exportTotalAvg">0</strong>
+      </div>
+    </div>
+
+    <h3 class="table-title">Факт по дням</h3>
+
+    <div class="table-wrap">
+      <table class="export-table">
+        <thead>
+          <tr>
+            <th>День</th>
+            <th>Дата</th>
+            <th>Факт ТО</th>
+            <th>Факт GC</th>
+            <th>Средний чек</th>
+          </tr>
+        </thead>
+        <tbody id="dailyExportBody"></tbody>
+      </table>
+    </div>
+
+    <h3 class="table-title">Почасовой факт</h3>
+
+    <div class="table-wrap">
+      <table class="export-table">
+        <thead>
+          <tr>
+            <th>Дата</th>
+            <th>Час</th>
+            <th>Факт ТО</th>
+            <th>Факт GC</th>
+            <th>Средний чек</th>
+          </tr>
+        </thead>
+        <tbody id="hourlyExportBody"></tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="primary-btn" id="saveExportBtn" type="button">
+        Сохранить в базу
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>Загруженные экспорты</h2>
+        <p>Здесь видно, какой файл за какой период загружен и для какой недели планирования он используется.</p>
+      </div>
+
+      <button class="secondary-btn" id="refreshExportsBtn" type="button">
+        Обновить
+      </button>
+    </div>
+
+    <div id="exportsListEmpty" class="empty-state">
+      Загруженных экспортов пока нет.
+    </div>
+
+    <div class="exports-list" id="exportsList"></div>
+  </div>
+</div>

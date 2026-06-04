@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Planning</title>
+
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/pages/dashboard.css" />
+  <link rel="stylesheet" href="../css/pages/planning.css" />
+  <link rel="stylesheet" href="../css/pages/export.css" />
+  <link rel="stylesheet" href="../css/pages/settings.css" />
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- SIDEBAR всегда стоит -->
+    <aside class="sidebar" id="sidebar">
+      <div>
+        <div class="sidebar-brand">
+          <div class="sidebar-logo">P</div>
+          <div>
+            <h2>Planning</h2>
+            <p>Weekly system</p>
+          </div>
+        </div>
+
+        <div class="restaurant-box">
+          <span>Текущий ресторан</span>
+          <strong id="restaurantName">Загрузка...</strong>
+          <small>ID: <span id="restaurantId">...</span></small>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a class="sidebar-link active" href="#dashboard" data-view="dashboard">
+            <span>🏠</span>
+            Dashboard
+          </a>
+
+          <a class="sidebar-link" href="#export" data-view="export">
+            <span>📤</span>
+            Экспорт прошлой недели
+          </a>
+
+          <a class="sidebar-link" href="#planning" data-view="planning">
+            <span>📅</span>
+            Планирование
+          </a>
+
+          <a class="sidebar-link" href="#settings" data-view="settings">
+            <span>⚙️</span>
+            Настройки
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logoutBtn" type="button">
+          Выйти
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ОҢ ЖАҚ ОСЫ ЖЕРДЕ ҒАНА АУЫСАДЫ -->
+    <main class="main-wrapper">
+      <header class="topbar">
+        <div>
+          <h1 id="pageTitle">Недельный план</h1>
+          <p id="pageSubtitle">Планирование ТО, GC и среднего чека по дням недели</p>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" type="button">
+          Меню
+        </button>
+      </header>
+
+      <section class="content" id="pageContent">
+        <!-- Контент JS арқылы шығады -->
+      </section>
+    </main>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/planning-page.js"></script>
+    <script src="../js/export-page.js"></script>
+    <script src="../js/settings-page.js"></script>
+    <script src="../js/dashboard-page.js"></script>
+    <script src="../js/sidebar.js"></script>
+</body>
+</html>

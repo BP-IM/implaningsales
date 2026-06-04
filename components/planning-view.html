@@ -1,0 +1,111 @@
+<div class="planning-grid">
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>Планирование недели</h2>
+        <p>Введите общий недельный план. Система рассчитает дневной и почасовой план на основе последнего экспорта.</p>
+      </div>
+    </div>
+
+    <div class="export-status" id="planningExportStatus">
+      Загрузка последнего экспорта...
+    </div>
+
+    <div class="form-grid">
+      <label>
+        Начало недели
+        <input type="date" id="planWeekStart" />
+      </label>
+
+      <label>
+        Конец недели
+        <input type="date" id="planWeekEnd" readonly />
+      </label>
+
+      <label>
+        Недельный ТО
+        <input type="number" id="planWeeklyTo" placeholder="Например: 7000000" />
+      </label>
+
+      <label>
+        Недельный GC
+        <input type="number" id="planWeeklyGc" placeholder="Например: 14000" />
+      </label>
+
+      <label>
+        Средний чек
+        <input type="text" id="planWeeklyAvg" placeholder="Автоматически" readonly />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="secondary-btn" id="recommendPlanBtn" type="button">
+        Рекомендовать по прошлой неделе
+      </button>
+
+      <button class="primary-btn" id="calculatePlanningBtn" type="button">
+        Рассчитать план
+      </button>
+
+      <button class="secondary-btn" id="savePlanningBtn" type="button" disabled>
+        Сохранить план
+      </button>
+    </div>
+
+    <p class="planning-message" id="planningMessage"></p>
+  </div>
+
+  <div class="card" id="dailyPlanCard" style="display: none;">
+    <div class="section-head">
+      <div>
+        <h2>Дневной план</h2>
+        <p>План по дням с учетом коэффициентов и особых дней.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="planning-table">
+        <thead>
+          <tr>
+            <th>День</th>
+            <th>Дата</th>
+            <th>Прошлая неделя ТО</th>
+            <th>Коэфф.</th>
+            <th>План ТО</th>
+            <th>План GC</th>
+            <th>Средний чек</th>
+          </tr>
+        </thead>
+
+        <tbody id="dailyPlanBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" id="hourlyPlanCard" style="display: none;">
+    <div class="section-head">
+      <div>
+        <h2>Почасовой план</h2>
+        <p>Закрытые часы из настроек всегда получают 0.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="planning-table">
+        <thead>
+          <tr>
+            <th>Дата</th>
+            <th>День</th>
+            <th>Час</th>
+            <th>Статус</th>
+            <th>План ТО</th>
+            <th>План GC</th>
+            <th>Средний чек</th>
+          </tr>
+        </thead>
+
+        <tbody id="hourlyPlanBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>

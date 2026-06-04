@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Planning | Вход</title>
+
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-card">
+
+      <div class="brand">
+        <div class="brand-icon">P</div>
+
+        <div>
+          <h1>Planning</h1>
+          <p>Система недельного планирования ресторана</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" type="button" data-target="loginForm">
+          Вход
+        </button>
+
+        <button class="tab-btn" type="button" data-target="registerForm">
+          Регистрация
+        </button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="auth-form active">
+        <label for="loginEmail">
+          Email
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="example@mail.com"
+            autocomplete="email"
+            required
+          />
+        </label>
+
+       <label for="loginPassword">
+            Пароль
+            <div class="password-field">
+                <input
+                type="password"
+                id="loginPassword"
+                placeholder="Введите пароль"
+                autocomplete="current-password"
+                required
+                />
+
+                <button
+                type="button"
+                class="toggle-password"
+                data-target="loginPassword"
+                aria-label="Показать пароль"
+                >
+                <svg class="icon icon-eye-closed" viewBox="0 0 24 24">
+                    <path d="M4 14c2-4 5-6 8-6s6 2 8 6" />
+                    <path d="M9 14a3 3 0 0 0 6 0" />
+                </svg>
+
+                <svg class="icon icon-eye-open" viewBox="0 0 24 24">
+                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg>
+                </button>
+            </div>
+        </label>
+
+        <button type="submit" class="submit-btn">
+          Войти
+        </button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="auth-form">
+        <label for="restaurantName">
+          Название ресторана
+          <input
+            type="text"
+            id="restaurantName"
+            placeholder="название ресторана"
+            autocomplete="organization"
+            required
+          />
+        </label>
+
+        <label for="registerEmail">
+          Email
+          <input
+            type="email"
+            id="registerEmail"
+            placeholder="example@mail.com"
+            autocomplete="email"
+            required
+          />
+        </label>
+
+        <label for="restaurantId">
+          Номер ресторана / ID
+          <input
+            type="text"
+            id="restaurantId"
+            placeholder="номер ресторана"
+            autocomplete="off"
+            required
+          />
+        </label>
+
+        <label for="registerPassword">
+            Пароль
+            <div class="password-field">
+                <input
+                type="password"
+                id="registerPassword"
+                placeholder="Минимум 6 символов"
+                autocomplete="new-password"
+                required
+                />
+
+                <button
+                type="button"
+                class="toggle-password"
+                data-target="registerPassword"
+                aria-label="Показать пароль"
+                >
+                <svg class="icon icon-eye-closed" viewBox="0 0 24 24">
+                    <path d="M4 14c2-4 5-6 8-6s6 2 8 6" />
+                    <path d="M9 14a3 3 0 0 0 6 0" />
+                </svg>
+
+                <svg class="icon icon-eye-open" viewBox="0 0 24 24">
+                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg>
+                </button>
+            </div>
+        </label>
+        <button type="submit" class="submit-btn">
+          Зарегистрироваться
+        </button>
+      </form>
+
+      <p id="authMessage" class="auth-message"></p>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

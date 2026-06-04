@@ -1,0 +1,111 @@
+<div class="settings-grid">
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>Настройки ресторана</h2>
+        <p>Коэффициенты и рабочие часы используются для расчета планирования.</p>
+      </div>
+    </div>
+
+    <div class="settings-info">
+      <div>
+        <span>Ресторан</span>
+        <strong id="settingsRestaurantName">Загрузка...</strong>
+      </div>
+
+      <div>
+        <span>ID ресторана</span>
+        <strong id="settingsRestaurantId">...</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-tabs">
+    <button class="settings-tab active" type="button" data-settings-tab="coefficients">
+      Коэффициенты
+    </button>
+
+    <button class="settings-tab" type="button" data-settings-tab="worktime">
+      Рабочее время
+    </button>
+  </div>
+
+  <div class="settings-panel active" id="coefficientsPanel">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Коэффициенты по дням недели</h2>
+          <p>План будет распределяться по дням с учетом этих коэффициентов.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="settings-table">
+          <thead>
+            <tr>
+              <th>День</th>
+              <th>Коэффициент</th>
+            </tr>
+          </thead>
+
+          <tbody id="dayCoefficientsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Праздничные и особые дни</h2>
+          <p>Добавьте дни, когда ожидается рост или падение продаж.</p>
+        </div>
+
+        <button class="secondary-btn" id="addHolidayBtn" type="button">
+          Добавить день
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="settings-table">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Название</th>
+              <th>Коэффициент</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody id="holidayBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-panel" id="worktimePanel">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Рабочее время</h2>
+          <p>Отметьте часы, когда ресторан работает. В закрытые часы план будет всегда 0.</p>
+        </div>
+      </div>
+
+      <div class="worktime-grid" id="workingHoursBody"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="actions">
+      <button class="primary-btn" id="saveSettingsBtn" type="button">
+        Сохранить настройки
+      </button>
+
+      <button class="secondary-btn" id="resetSettingsBtn" type="button">
+        Сбросить по умолчанию
+      </button>
+    </div>
+
+    <p class="settings-message" id="settingsMessage"></p>
+  </div>
+</div>

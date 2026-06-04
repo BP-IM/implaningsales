@@ -1,0 +1,78 @@
+<div class="dashboard-grid">
+  <div class="card dashboard-hero">
+    <div>
+      <p class="eyebrow">Текущий ресторан</p>
+      <h2 id="dashboardRestaurantName">Загрузка...</h2>
+      <p>ID ресторана: <strong id="dashboardRestaurantId">...</strong></p>
+    </div>
+
+    <div class="today-box">
+      <span>Дата</span>
+      <input type="date" id="dashboardDateInput" />
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>План на выбранный день</h2>
+        <p id="dashboardPlanStatus">Загрузка плана...</p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span>План ТО</span>
+        <strong id="todayPlanTo">0</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>План GC</span>
+        <strong id="todayPlanGc">0</strong>
+      </div>
+
+      <div class="stat-card">
+        <span>Средний чек</span>
+        <strong id="todayAvgCheck">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>Почасовой план</h2>
+        <p>Выделите нужные ячейки в одном столбце и скопируйте их для Excel.</p>
+      </div>
+
+      <div class="selected-actions" id="selectedActions" style="display: none;">
+        <button class="primary-btn" id="copySelectedBtn" type="button">
+          Копировать выделенное
+        </button>
+
+        <button class="secondary-btn" id="clearSelectionBtn" type="button">
+          Снять выделение
+        </button>
+      </div>
+    </div>
+
+    <div id="dashboardHourlyEmpty" class="empty-state">
+      На выбранную дату почасовой план не найден.
+    </div>
+
+    <div class="table-wrap" id="dashboardHourlyTableWrap" style="display: none;">
+      <table class="dashboard-table selectable-table" id="dashboardHourlyTable">
+        <thead>
+          <tr>
+            <th>Час</th>
+            <th>ТОО</th>
+            <th>GC</th>
+            <th>Ср. чек</th>
+          </tr>
+        </thead>
+
+        <tbody id="dashboardHourlyBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>

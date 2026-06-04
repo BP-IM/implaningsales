@@ -1,0 +1,220 @@
+.export-grid {
+  display: grid;
+  gap: 22px;
+}
+
+.upload-box {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: center;
+  background: #f9fafb;
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.upload-box input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+}
+
+.upload-box strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.upload-box p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.export-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.export-summary div {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.export-summary span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.export-summary strong {
+  font-size: 18px;
+  word-break: break-word;
+}
+
+.table-title {
+  margin: 24px 0 12px;
+  font-size: 18px;
+}
+
+.export-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.export-table thead {
+  background: #f9fafb;
+}
+
+.export-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.export-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #111827;
+  font-weight: 700;
+}
+
+.export-table tr:last-child td {
+  border-bottom: none;
+}
+
+.export-message {
+  min-height: 20px;
+  margin: 14px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+.export-message.error {
+  color: #dc2626;
+}
+
+.exports-list {
+  display: grid;
+  gap: 14px;
+}
+
+.export-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.export-item-main {
+  display: grid;
+  gap: 10px;
+}
+
+.export-item-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.export-item-title h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.actual-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.export-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.export-meta div {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.export-meta span {
+  display: block;
+  font-size: 12px;
+  font-weight: 900;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.export-meta strong {
+  font-size: 14px;
+  color: #111827;
+}
+
+.export-file-name {
+  color: #6b7280;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.delete-export-btn {
+  border: none;
+  border-radius: 13px;
+  padding: 12px 16px;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.delete-export-btn:hover {
+  background: rgba(220, 38, 38, 0.18);
+}
+
+@media (max-width: 900px) {
+  .upload-box {
+    grid-template-columns: 1fr;
+  }
+
+  .export-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .export-item {
+    grid-template-columns: 1fr;
+  }
+
+  .export-meta {
+    grid-template-columns: 1fr;
+  }
+}
