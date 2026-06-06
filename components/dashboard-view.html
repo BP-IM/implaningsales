@@ -39,17 +39,16 @@
   </div>
 
   <div class="card">
-    <div class="section-head">
+    <div class="section-head dashboard-hourly-head">
       <div>
         <h2>Почасовой план</h2>
-        <p>Выделите нужные ячейки в одном столбце и скопируйте их для Excel.</p>
+        <p>
+          Выделите ячейки мышкой и нажмите Ctrl + C. 
+          Потом вставьте в Excel через Ctrl + V.
+        </p>
       </div>
 
-      <div class="selected-actions" id="selectedActions" style="display: none;">
-        <button class="primary-btn" id="copySelectedBtn" type="button">
-          Копировать выделенное
-        </button>
-
+      <div class="selected-actions" id="selectedActions">
         <button class="secondary-btn" id="clearSelectionBtn" type="button">
           Снять выделение
         </button>
@@ -61,11 +60,11 @@
     </div>
 
     <div class="table-wrap" id="dashboardHourlyTableWrap" style="display: none;">
-      <table class="dashboard-table selectable-table" id="dashboardHourlyTable">
+      <table class="dashboard-table selectable-table excel-copy-table" id="dashboardHourlyTable">
         <thead>
           <tr>
             <th>Час</th>
-            <th>ТОО</th>
+            <th>ТО</th>
             <th>GC</th>
             <th>Ср. чек</th>
           </tr>

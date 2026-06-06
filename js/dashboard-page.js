@@ -20,10 +20,11 @@ function initDashboardView() {
   const hourlyTable = document.getElementById("dashboardHourlyTable");
 
   const selectedActions = document.getElementById("selectedActions");
-  const copySelectedBtn = document.getElementById("copySelectedBtn");
+  // const copySelectedBtn = document.getElementById("copySelectedBtn");
   const clearSelectionBtn = document.getElementById("clearSelectionBtn");
 
   let currentHourlyPlans = [];
+  let autoCopyTimer = null;
 
   let selection = {
     active: false,
@@ -51,13 +52,33 @@ function initDashboardView() {
   }
 
   function setStatus(text, type = "") {
+    if (!statusEl) return;
+
     statusEl.textContent = text;
     statusEl.className = type;
   }
 
+  function showCopyToast(text) {
+    let toast = document.querySelector(".copy-toast");
+
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "copy-toast";
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = text;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 1800);
+  }
+
   function clearSelectedCells() {
-    document.querySelectorAll(".selectable-cell.selected").forEach((cell) => {
+    document.querySelectorAll("#dashboardHourlyTable .selectable-cell.selected").forEach((cell) => {
       cell.classList.remove("selected");
+      cell.classList.remove("copy-selected");
     });
 
     selection = {
@@ -67,32 +88,44 @@ function initDashboardView() {
       endIndex: null
     };
 
+    if (hourlyTable) {
+      hourlyTable.classList.remove("is-selecting");
+    }
+
+    // Кнопкаларды жасырмаймыз. HTML-де олар постоянно көрініп тұрсын.
     if (selectedActions) {
-      selectedActions.style.display = "none";
+      selectedActions.style.display = "flex";
     }
   }
 
   function clearDashboard() {
-    planToEl.textContent = "0";
-    planGcEl.textContent = "0";
-    avgCheckEl.textContent = "0";
+    if (planToEl) planToEl.textContent = "0";
+    if (planGcEl) planGcEl.textContent = "0";
+    if (avgCheckEl) avgCheckEl.textContent = "0";
 
-    hourlyBody.innerHTML = "";
-    hourlyEmpty.style.display = "block";
-    hourlyTableWrap.style.display = "none";
+    if (hourlyBody) hourlyBody.innerHTML = "";
+    if (hourlyEmpty) hourlyEmpty.style.display = "block";
+    if (hourlyTableWrap) hourlyTableWrap.style.display = "none";
 
     currentHourlyPlans = [];
     clearSelectedCells();
   }
 
   function getSelectedCells() {
-    return Array.from(document.querySelectorAll(".selectable-cell.selected"))
-      .sort((a, b) => Number(a.dataset.rowIndex) - Number(b.dataset.rowIndex));
+    return Array.from(document.querySelectorAll("#dashboardHourlyTable .selectable-cell.selected"))
+      .sort((a, b) => {
+        const rowDiff = Number(a.dataset.rowIndex) - Number(b.dataset.rowIndex);
+
+        if (rowDiff !== 0) return rowDiff;
+
+        return Number(a.cellIndex) - Number(b.cellIndex);
+      });
   }
 
   function updateSelectedCells() {
-    document.querySelectorAll(".selectable-cell.selected").forEach((cell) => {
+    document.querySelectorAll("#dashboardHourlyTable .selectable-cell.selected").forEach((cell) => {
       cell.classList.remove("selected");
+      cell.classList.remove("copy-selected");
     });
 
     if (
@@ -107,7 +140,7 @@ function initDashboardView() {
     const end = Math.max(selection.startIndex, selection.endIndex);
 
     const cells = document.querySelectorAll(
-      `.selectable-cell[data-column="${selection.column}"]`
+      `#dashboardHourlyTable .selectable-cell[data-column="${selection.column}"]`
     );
 
     cells.forEach((cell) => {
@@ -115,6 +148,7 @@ function initDashboardView() {
 
       if (index >= start && index <= end) {
         cell.classList.add("selected");
+        cell.classList.add("copy-selected");
       }
     });
 
@@ -134,15 +168,11 @@ function initDashboardView() {
       endIndex: rowIndex
     };
 
-    updateSelectedCells();
+    if (hourlyTable) {
+      hourlyTable.classList.add("is-selecting");
+    }
 
-    document.addEventListener(
-      "mouseup",
-      () => {
-        selection.active = false;
-      },
-      { once: true }
-    );
+    updateSelectedCells();
   }
 
   function moveCellSelection(cell) {
@@ -150,12 +180,34 @@ function initDashboardView() {
 
     const column = cell.dataset.column;
 
+    // Бір уақытта тек бір столбец выделить етеміз.
+    // Excel-ге баған ретінде таза түсу үшін осылай дұрыс.
     if (column !== selection.column) return;
 
     selection.endIndex = Number(cell.dataset.rowIndex);
 
     updateSelectedCells();
   }
+
+  function stopCellSelection() {
+  const wasSelecting = selection.active;
+
+  selection.active = false;
+
+  if (hourlyTable) {
+    hourlyTable.classList.remove("is-selecting");
+  }
+
+  const selectedCells = getSelectedCells();
+
+  if (!wasSelecting || !selectedCells.length) return;
+
+  clearTimeout(autoCopyTimer);
+
+  autoCopyTimer = setTimeout(() => {
+    copySelectedCells();
+  }, 80);
+}
 
   function buildSelectedText() {
     const selectedCells = getSelectedCells();
@@ -174,7 +226,7 @@ function initDashboardView() {
 
     const labels = {
       hour: "Час",
-      plan_to: "ТОО",
+      plan_to: "ТО",
       plan_gc: "GC",
       plan_avg_check: "Ср. чек"
     };
@@ -215,6 +267,7 @@ function initDashboardView() {
 
     if (!selectedCells.length) {
       setStatus("Сначала выделите нужные ячейки.", "error");
+      showCopyToast("Сначала выделите ячейки");
       return;
     }
 
@@ -228,14 +281,40 @@ function initDashboardView() {
       await copyText(text);
 
       setStatus(`${label} скопирован: ${firstHour} — ${lastHour}. Можно вставить в Excel.`, "success");
+      showCopyToast("Скопировано. Можно вставлять в Excel");
     } catch (error) {
       console.error(error);
       setStatus("Не удалось скопировать выделенные данные.", "error");
+      showCopyToast("Не удалось скопировать");
+    }
+  }
+
+  async function copySingleCell(cell) {
+    if (!cell) return;
+
+    clearSelectedCells();
+
+    cell.classList.add("selected");
+    cell.classList.add("copy-selected");
+
+    const value = cell.dataset.copyValue || cell.textContent.trim();
+
+    try {
+      await copyText(value);
+
+      setStatus("Ячейка скопирована. Можно вставить в Excel.", "success");
+      showCopyToast("Ячейка скопирована");
+    } catch (error) {
+      console.error(error);
+      setStatus("Не удалось скопировать ячейку.", "error");
+      showCopyToast("Не удалось скопировать");
     }
   }
 
   function renderHourlyTable(hourlyPlans) {
     currentHourlyPlans = hourlyPlans;
+
+    if (!hourlyBody) return;
 
     hourlyBody.innerHTML = hourlyPlans
       .map((row, index) => {
@@ -289,8 +368,10 @@ function initDashboardView() {
       })
       .join("");
 
-    hourlyEmpty.style.display = "none";
-    hourlyTableWrap.style.display = "block";
+    if (hourlyEmpty) hourlyEmpty.style.display = "none";
+    if (hourlyTableWrap) hourlyTableWrap.style.display = "block";
+
+    clearSelectedCells();
   }
 
   async function loadDashboardPlan(date) {
@@ -321,9 +402,9 @@ function initDashboardView() {
       return;
     }
 
-    planToEl.textContent = formatNumber(dailyPlan.plan_to);
-    planGcEl.textContent = formatNumber(dailyPlan.plan_gc);
-    avgCheckEl.textContent = formatNumber(dailyPlan.plan_avg_check);
+    if (planToEl) planToEl.textContent = formatNumber(dailyPlan.plan_to);
+    if (planGcEl) planGcEl.textContent = formatNumber(dailyPlan.plan_gc);
+    if (avgCheckEl) avgCheckEl.textContent = formatNumber(dailyPlan.plan_avg_check);
 
     setStatus(`План найден: ${dailyPlan.day_name || date}`, "success");
 
@@ -341,8 +422,8 @@ function initDashboardView() {
     }
 
     if (!hourlyPlans || hourlyPlans.length === 0) {
-      hourlyEmpty.style.display = "block";
-      hourlyTableWrap.style.display = "none";
+      if (hourlyEmpty) hourlyEmpty.style.display = "block";
+      if (hourlyTableWrap) hourlyTableWrap.style.display = "none";
       return;
     }
 
@@ -366,16 +447,41 @@ function initDashboardView() {
 
       moveCellSelection(cell);
     });
+
+//    hourlyTable.addEventListener("dblclick", (event) => {
+//      const cell = event.target.closest(".selectable-cell");
+
+//      if (!cell) return;
+
+//      event.preventDefault();
+//      copySingleCell(cell);
+//   });
   }
 
-  if (copySelectedBtn) {
-    copySelectedBtn.addEventListener("click", copySelectedCells);
-  }
+  document.addEventListener("mouseup", stopCellSelection);
+
+  document.addEventListener("keydown", (event) => {
+    const isCopyCommand = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "c";
+
+    if (!isCopyCommand) return;
+
+    const selectedCells = getSelectedCells();
+
+    if (!selectedCells.length) return;
+
+    event.preventDefault();
+    copySelectedCells();
+  });
+
+  // if (copySelectedBtn) {
+  //   copySelectedBtn.addEventListener("click", copySelectedCells);
+  // }
 
   if (clearSelectionBtn) {
     clearSelectionBtn.addEventListener("click", () => {
       clearSelectedCells();
       setStatus("Выделение снято.");
+      showCopyToast("Выделение снято");
     });
   }
 

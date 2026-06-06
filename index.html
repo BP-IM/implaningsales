@@ -6,16 +6,29 @@
 
   <title>Planning | Вход</title>
 
+  <!-- APP ICON / FAVICON -->
+  <link rel="icon" type="image/png" href="images/planning-icon.png" />
+  <link rel="apple-touch-icon" href="images/planning-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- MOBILE APP SETTINGS -->
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Planning" />
+
   <link rel="stylesheet" href="css/auth.css" />
 </head>
 <body>
   <main class="auth-page">
     <section class="auth-card">
 
-      <div class="brand">
-        <div class="brand-icon">P</div>
+      <div class="brand brand-vertical">
+        <div class="brand-icon brand-icon-image">
+          <img src="images/planning-icon.png" alt="Planning" />
+        </div>
 
-        <div>
+        <div class="brand-text">
           <h1>Planning</h1>
           <p>Система недельного планирования ресторана</p>
         </div>
@@ -44,34 +57,34 @@
           />
         </label>
 
-       <label for="loginPassword">
-            Пароль
-            <div class="password-field">
-                <input
-                type="password"
-                id="loginPassword"
-                placeholder="Введите пароль"
-                autocomplete="current-password"
-                required
-                />
+        <label for="loginPassword">
+          Пароль
+          <div class="password-field">
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Введите пароль"
+              autocomplete="current-password"
+              required
+            />
 
-                <button
-                type="button"
-                class="toggle-password"
-                data-target="loginPassword"
-                aria-label="Показать пароль"
-                >
-                <svg class="icon icon-eye-closed" viewBox="0 0 24 24">
-                    <path d="M4 14c2-4 5-6 8-6s6 2 8 6" />
-                    <path d="M9 14a3 3 0 0 0 6 0" />
-                </svg>
+            <button
+              type="button"
+              class="toggle-password"
+              data-target="loginPassword"
+              aria-label="Показать пароль"
+            >
+              <svg class="icon icon-eye-closed" viewBox="0 0 24 24">
+                <path d="M4 14c2-4 5-6 8-6s6 2 8 6" />
+                <path d="M9 14a3 3 0 0 0 6 0" />
+              </svg>
 
-                <svg class="icon icon-eye-open" viewBox="0 0 24 24">
-                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
-                    <circle cx="12" cy="12" r="3" />
-                </svg>
-                </button>
-            </div>
+              <svg class="icon icon-eye-open" viewBox="0 0 24 24">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
         </label>
 
         <button type="submit" class="submit-btn">
@@ -115,34 +128,35 @@
         </label>
 
         <label for="registerPassword">
-            Пароль
-            <div class="password-field">
-                <input
-                type="password"
-                id="registerPassword"
-                placeholder="Минимум 6 символов"
-                autocomplete="new-password"
-                required
-                />
+          Пароль
+          <div class="password-field">
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="Минимум 6 символов"
+              autocomplete="new-password"
+              required
+            />
 
-                <button
-                type="button"
-                class="toggle-password"
-                data-target="registerPassword"
-                aria-label="Показать пароль"
-                >
-                <svg class="icon icon-eye-closed" viewBox="0 0 24 24">
-                    <path d="M4 14c2-4 5-6 8-6s6 2 8 6" />
-                    <path d="M9 14a3 3 0 0 0 6 0" />
-                </svg>
+            <button
+              type="button"
+              class="toggle-password"
+              data-target="registerPassword"
+              aria-label="Показать пароль"
+            >
+              <svg class="icon icon-eye-closed" viewBox="0 0 24 24">
+                <path d="M4 14c2-4 5-6 8-6s6 2 8 6" />
+                <path d="M9 14a3 3 0 0 0 6 0" />
+              </svg>
 
-                <svg class="icon icon-eye-open" viewBox="0 0 24 24">
-                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
-                    <circle cx="12" cy="12" r="3" />
-                </svg>
-                </button>
-            </div>
+              <svg class="icon icon-eye-open" viewBox="0 0 24 24">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
         </label>
+
         <button type="submit" class="submit-btn">
           Зарегистрироваться
         </button>

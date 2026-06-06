@@ -94,6 +94,25 @@
   border: 1px dashed #d1d5db;
 }
 
+/* =========================
+   HOURLY PLAN HEADER
+========================= */
+
+.dashboard-hourly-head {
+  align-items: flex-start;
+}
+
+.selected-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* =========================
+   TABLE
+========================= */
+
 .dashboard-table {
   width: 100%;
   min-width: 620px;
@@ -112,6 +131,7 @@
   font-weight: 900;
   color: #374151;
   border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
 }
 
 .dashboard-table td {
@@ -120,11 +140,16 @@
   font-size: 14px;
   color: #111827;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .dashboard-table tr:last-child td {
   border-bottom: none;
 }
+
+/* =========================
+   PLAN STATUS
+========================= */
 
 #dashboardPlanStatus.success {
   color: #16a34a;
@@ -136,30 +161,87 @@
   font-weight: 800;
 }
 
-.selected-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
+/* =========================
+   EXCEL-LIKE SELECTION
+========================= */
 
-.selectable-table {
+.selectable-table,
+.excel-copy-table {
   user-select: none;
 }
 
+.excel-copy-table td,
 .selectable-cell {
-  cursor: pointer;
-  transition: 0.12s;
+  cursor: cell;
+  transition: background 0.12s ease, color 0.12s ease;
 }
 
+.excel-copy-table td:hover,
 .selectable-cell:hover {
   background: rgba(37, 99, 235, 0.08);
 }
 
-.selectable-cell.selected {
-  background: #2563eb;
-  color: #ffffff;
+.excel-copy-table td.copy-selected,
+.selectable-cell.selected,
+.selectable-cell.copy-selected {
+  background: #2563eb !important;
+  color: #ffffff !important;
   font-weight: 900;
 }
+
+.excel-copy-table td.copy-selected *,
+.selectable-cell.selected *,
+.selectable-cell.copy-selected * {
+  color: #ffffff !important;
+}
+
+/* Когда пользователь тянет мышкой — чтобы текст случайно не выделялся */
+.excel-copy-table.is-selecting,
+.excel-copy-table.is-selecting td,
+.selectable-table.is-selecting,
+.selectable-table.is-selecting td {
+  user-select: none;
+  cursor: cell;
+}
+
+/* Кнопки */
+.selected-actions .primary-btn,
+.selected-actions .secondary-btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 13px;
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* Toast после копирования */
+.copy-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.copy-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media (max-width: 900px) {
   .dashboard-hero {
@@ -171,11 +253,16 @@
     width: 100%;
   }
 
+  .today-box input {
+    width: 100%;
+  }
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
 
-  .section-head {
+  .section-head,
+  .dashboard-hourly-head {
     flex-direction: column;
     align-items: stretch;
   }
@@ -188,4 +275,39 @@
   .selected-actions button {
     width: 100%;
   }
+}
+
+/* =========================
+   HOURLY PLAN INNER SCROLL
+========================= */
+
+#dashboardHourlyTableWrap {
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+/* Таблица header scroll кезінде жоғарыда жабысып тұрады */
+#dashboardHourlyTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #f9fafb;
+}
+
+/* Почасовой план карточкасы экранға ыңғайлы тұрсын */
+#dashboardHourlyTableWrap::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+#dashboardHourlyTableWrap::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+#dashboardHourlyTableWrap::-webkit-scrollbar-track {
+  background: #f8fafc;
 }

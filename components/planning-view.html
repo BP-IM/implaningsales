@@ -3,12 +3,25 @@
     <div class="section-head">
       <div>
         <h2>Планирование недели</h2>
-        <p>Введите общий недельный план. Система рассчитает дневной и почасовой план на основе последнего экспорта.</p>
+        <p>Введите общий недельный план. Система рассчитает дневной и почасовой план на основе выбранного экспорта.</p>
       </div>
     </div>
 
     <div class="export-status" id="planningExportStatus">
-      Загрузка последнего экспорта...
+      Загрузка экспортов...
+    </div>
+
+    <div class="planning-source">
+      <label>
+        Источник планирования
+        <select id="planningExportSource">
+          <option value="">Загрузка экспортов...</option>
+        </select>
+      </label>
+
+      <button class="secondary-btn planning-source-refresh" id="refreshPlanningExportsBtn" type="button">
+        Обновить список
+      </button>
     </div>
 
     <div class="form-grid">

@@ -64,7 +64,11 @@ function initPlanningForm() {
   const restaurantId = localStorage.getItem("restaurant_id");
 
   const exportStatus = document.getElementById("planningExportStatus");
+  const exportSourceSelect = document.getElementById("planningExportSource");
+  const refreshExportsBtn = document.getElementById("refreshPlanningExportsBtn");
   const message = document.getElementById("planningMessage");
+
+  let planningWeeklyExports = [];
 
   const weekStartInput = document.getElementById("planWeekStart");
   const weekEndInput = document.getElementById("planWeekEnd");
@@ -126,6 +130,40 @@ function initPlanningForm() {
       timeZone: "UTC"
     });
   }
+
+  function buildExportOptionText(weeklyExport) {
+  const avgCheck = Number(weeklyExport.total_gc) > 0
+    ? Math.round(Number(weeklyExport.total_to) / Number(weeklyExport.total_gc))
+    : 0;
+
+  return `${formatDateView(weeklyExport.week_start)} — ${formatDateView(weeklyExport.week_end)} | ТО: ${formatNumber(weeklyExport.total_to)} | GC: ${formatNumber(weeklyExport.total_gc)} | Ср. чек: ${formatNumber(avgCheck)}`;
+}
+
+function renderExportSourceOptions(selectedExportId = "") {
+  if (!exportSourceSelect) return;
+
+  exportSourceSelect.innerHTML = "";
+
+  if (!planningWeeklyExports.length) {
+    exportSourceSelect.innerHTML = `<option value="">Нет загруженных экспортов</option>`;
+    return;
+  }
+
+  planningWeeklyExports.forEach((weeklyExport) => {
+    const option = document.createElement("option");
+    option.value = weeklyExport.id;
+    option.textContent = buildExportOptionText(weeklyExport);
+    exportSourceSelect.appendChild(option);
+  });
+
+  const hasSelected = planningWeeklyExports.some((weeklyExport) => {
+    return String(weeklyExport.id) === String(selectedExportId);
+  });
+
+  exportSourceSelect.value = hasSelected
+    ? String(selectedExportId)
+    : String(planningWeeklyExports[0].id);
+}
 
   function getDayKeyByIndex(index) {
     return PLANNING_DAY_KEYS[index] || "monday";
@@ -313,76 +351,208 @@ function initPlanningForm() {
     };
   }
 
-  async function loadLatestExport() {
-    if (!restaurantId) {
-      setExportStatus("ID ресторана не найден. Войдите заново.", "error");
-      return;
-    }
+  async function loadExportDetails(weeklyExport, options = {}) {
+  const {
+    useLatestSavedPlan = false,
+    applyFollowingWeek = true,
+    clearPlanInputs = true
+  } = options;
 
-    const { data: weeklyExport, error: weeklyError } = await db
-      .from("weekly_exports")
-      .select("*")
-      .eq("restaurant_id", restaurantId)
-      .order("week_start", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+  if (!weeklyExport) return false;
 
-    if (weeklyError) {
-      console.error(weeklyError);
-      setExportStatus("Ошибка загрузки последнего экспорта.", "error");
-      return;
-    }
+  resetCalculatedState();
+  showMessage("");
+  setExportStatus("Загрузка данных выбранного экспорта...");
 
-    if (!weeklyExport) {
-      setExportStatus("Нет экспорта. Сначала загрузите Excel в разделе “Экспорт прошлой недели”.", "error");
-      return;
-    }
+  const { data: dailyExports, error: dailyError } = await db
+    .from("daily_exports")
+    .select("*")
+    .eq("export_id", weeklyExport.id)
+    .order("date", { ascending: true });
 
-    const { data: dailyExports, error: dailyError } = await db
-      .from("daily_exports")
-      .select("*")
-      .eq("export_id", weeklyExport.id)
-      .order("date", { ascending: true });
+  if (dailyError) {
+    console.error(dailyError);
+    setExportStatus("Ошибка загрузки дневного экспорта.", "error");
+    return false;
+  }
 
-    if (dailyError) {
-      console.error(dailyError);
-      setExportStatus("Ошибка загрузки дневного экспорта.", "error");
-      return;
-    }
+  const { data: hourlyExports, error: hourlyError } = await db
+    .from("hourly_exports")
+    .select("*")
+    .eq("export_id", weeklyExport.id)
+    .order("date", { ascending: true })
+    .order("hour", { ascending: true });
 
-    const { data: hourlyExports, error: hourlyError } = await db
-      .from("hourly_exports")
-      .select("*")
-      .eq("export_id", weeklyExport.id)
-      .order("date", { ascending: true })
-      .order("hour", { ascending: true });
+  if (hourlyError) {
+    console.error(hourlyError);
+    setExportStatus("Ошибка загрузки почасового экспорта.", "error");
+    return false;
+  }
 
-    if (hourlyError) {
-      console.error(hourlyError);
-      setExportStatus("Ошибка загрузки почасового экспорта.", "error");
-      return;
-    }
+  latestExportData = {
+    weekly: weeklyExport,
+    daily: dailyExports || [],
+    hourly: hourlyExports || []
+  };
 
-    latestExportData = {
-      weekly: weeklyExport,
-      daily: dailyExports || [],
-      hourly: hourlyExports || []
-    };
+  if (exportSourceSelect) {
+    exportSourceSelect.value = String(weeklyExport.id);
+  }
 
+  setExportStatus(
+    `Загружен экспорт: ${formatDateView(weeklyExport.week_start)} — ${formatDateView(weeklyExport.week_end)} | ТО: ${formatNumber(weeklyExport.total_to)} | GC: ${formatNumber(weeklyExport.total_gc)}`,
+    "success"
+  );
+
+  if (useLatestSavedPlan) {
     const hasSavedPlan = await loadLatestSavedPlan();
 
-    if (!hasSavedPlan) {
-      const recommendedWeekStart = await getNextAvailableWeekStart(weeklyExport.week_end);
+    if (!hasSavedPlan && applyFollowingWeek) {
+      const recommendedWeekStart = addDays(weeklyExport.week_end, 1);
 
       weekStartInput.value = recommendedWeekStart;
       updateWeekEnd();
+
+      showMessage("Выбран последний экспорт. На эту неделю сохраненного плана нет. Можно рассчитать новый.");
     }
 
-    setExportStatus(
-      `Загружен экспорт: ${formatDateView(weeklyExport.week_start)} — ${formatDateView(weeklyExport.week_end)} | ТО: ${formatNumber(weeklyExport.total_to)} | GC: ${formatNumber(weeklyExport.total_gc)}`,
-      "success"
-    );
+    return true;
   }
+
+  if (applyFollowingWeek) {
+    const planWeekStart = addDays(weeklyExport.week_end, 1);
+
+    weekStartInput.value = planWeekStart;
+    updateWeekEnd();
+
+    if (clearPlanInputs) {
+      weeklyToInput.value = "";
+      weeklyGcInput.value = "";
+      weeklyAvgInput.value = "";
+    }
+
+    const loaded = await loadSavedPlanByWeek(planWeekStart);
+
+    if (!loaded) {
+      showMessage("Источник выбран. Можно нажать “Рекомендовать по прошлой неделе” или ввести план вручную.");
+    }
+  }
+
+  return true;
+}
+
+async function loadPlanningExports(options = {}) {
+  const {
+    selectedExportId = "",
+    useLatestSavedPlan = false
+  } = options;
+
+  if (!restaurantId) {
+    setExportStatus("ID ресторана не найден. Войдите заново.", "error");
+    return;
+  }
+
+  if (exportSourceSelect) {
+    exportSourceSelect.disabled = true;
+    exportSourceSelect.innerHTML = `<option value="">Загрузка экспортов...</option>`;
+  }
+
+  if (refreshExportsBtn) {
+    refreshExportsBtn.disabled = true;
+  }
+
+  setExportStatus("Загрузка списка экспортов...");
+
+  const { data: weeklyExports, error: weeklyError } = await db
+    .from("weekly_exports")
+    .select("*")
+    .eq("restaurant_id", restaurantId)
+    .order("week_start", { ascending: false });
+
+  if (weeklyError) {
+    console.error(weeklyError);
+    setExportStatus("Ошибка загрузки экспортов.", "error");
+
+    if (exportSourceSelect) {
+      exportSourceSelect.disabled = false;
+    }
+
+    if (refreshExportsBtn) {
+      refreshExportsBtn.disabled = false;
+    }
+
+    return;
+  }
+
+  planningWeeklyExports = weeklyExports || [];
+
+  if (!planningWeeklyExports.length) {
+    renderExportSourceOptions();
+    setExportStatus("Нет экспорта. Сначала загрузите Excel в разделе “Экспорт прошлой недели”.", "error");
+
+    if (exportSourceSelect) {
+      exportSourceSelect.disabled = false;
+    }
+
+    if (refreshExportsBtn) {
+      refreshExportsBtn.disabled = false;
+    }
+
+    return;
+  }
+
+  const currentExportId =
+    selectedExportId ||
+    latestExportData?.weekly?.id ||
+    planningWeeklyExports[0].id;
+
+  renderExportSourceOptions(currentExportId);
+
+  const selectedWeeklyExport = planningWeeklyExports.find((weeklyExport) => {
+    return String(weeklyExport.id) === String(exportSourceSelect?.value || currentExportId);
+  }) || planningWeeklyExports[0];
+
+  await loadExportDetails(selectedWeeklyExport, {
+    useLatestSavedPlan,
+    applyFollowingWeek: true,
+    clearPlanInputs: !useLatestSavedPlan
+  });
+
+  if (exportSourceSelect) {
+    exportSourceSelect.disabled = false;
+  }
+
+  if (refreshExportsBtn) {
+    refreshExportsBtn.disabled = false;
+  }
+}
+
+async function handleExportSourceChange() {
+  const selectedExportId = exportSourceSelect?.value;
+
+  if (!selectedExportId) return;
+
+  const selectedWeeklyExport = planningWeeklyExports.find((weeklyExport) => {
+    return String(weeklyExport.id) === String(selectedExportId);
+  });
+
+  if (!selectedWeeklyExport) {
+    showMessage("Выбранный экспорт не найден. Обновите список.", "error");
+    return;
+  }
+
+  if (exportSourceSelect) exportSourceSelect.disabled = true;
+  if (refreshExportsBtn) refreshExportsBtn.disabled = true;
+
+  await loadExportDetails(selectedWeeklyExport, {
+    useLatestSavedPlan: false,
+    applyFollowingWeek: true,
+    clearPlanInputs: true
+  });
+
+  if (exportSourceSelect) exportSourceSelect.disabled = false;
+  if (refreshExportsBtn) refreshExportsBtn.disabled = false;
+}
 
   async function loadSavedPlanByWeek(weekStart) {
     if (!restaurantId || !weekStart) return false;
@@ -822,25 +992,40 @@ function initPlanningForm() {
     }
   }
 
-  weekStartInput.addEventListener("change", handleWeekStartChange);
+  if (exportSourceSelect) {
+  exportSourceSelect.addEventListener("change", handleExportSourceChange);
+}
 
-  weeklyToInput.addEventListener("input", () => {
-    updateWeeklyAvg();
-    resetCalculatedState();
+if (refreshExportsBtn) {
+  refreshExportsBtn.addEventListener("click", () => {
+    loadPlanningExports({
+      selectedExportId: exportSourceSelect?.value || "",
+      useLatestSavedPlan: false
+    });
   });
+}
 
-  weeklyGcInput.addEventListener("input", () => {
-    updateWeeklyAvg();
-    resetCalculatedState();
-  });
+weekStartInput.addEventListener("change", handleWeekStartChange);
 
-  if (recommendBtn) {
-    recommendBtn.addEventListener("click", recommendWeeklyPlan);
-  }
+weeklyToInput.addEventListener("input", () => {
+  updateWeeklyAvg();
+  resetCalculatedState();
+});
 
-  calculateBtn.addEventListener("click", calculatePlanning);
-  saveBtn.addEventListener("click", savePlanning);
+weeklyGcInput.addEventListener("input", () => {
+  updateWeeklyAvg();
+  resetCalculatedState();
+});
 
-  loadSettings();
-  loadLatestExport();
+if (recommendBtn) {
+  recommendBtn.addEventListener("click", recommendWeeklyPlan);
+}
+
+calculateBtn.addEventListener("click", calculatePlanning);
+saveBtn.addEventListener("click", savePlanning);
+
+(async () => {
+  await loadSettings();
+  await loadPlanningExports({ useLatestSavedPlan: true });
+})();
 }
