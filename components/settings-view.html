@@ -3,7 +3,7 @@
     <div class="section-head">
       <div>
         <h2>Настройки ресторана</h2>
-        <p>Коэффициенты и рабочие часы используются для расчета планирования.</p>
+        <p>Коэффициенты, рабочие часы и VLH используются для расчета планирования.</p>
       </div>
     </div>
 
@@ -27,6 +27,10 @@
 
     <button class="settings-tab" type="button" data-settings-tab="worktime">
       Рабочее время
+    </button>
+
+    <button class="settings-tab" type="button" data-settings-tab="vlh">
+      VLH ресторана
     </button>
   </div>
 
@@ -92,6 +96,41 @@
       </div>
 
       <div class="worktime-grid" id="workingHoursBody"></div>
+    </div>
+  </div>
+
+  <div class="settings-panel" id="vlhPanel">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>VLH ресторана</h2>
+          <p>Укажите, сколько работников нужно при определенном GC. Например: GC 6 = 1 работник.</p>
+        </div>
+
+        <div class="actions">
+          <button class="secondary-btn" id="loadDefaultVlhBtn" type="button">
+            Загрузить стандарт
+          </button>
+
+          <button class="secondary-btn" id="addVlhRowBtn" type="button">
+            Добавить строку
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="settings-table">
+          <thead>
+            <tr>
+              <th>GC от</th>
+              <th>К-во работников</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody id="vlhRulesBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 

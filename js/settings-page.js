@@ -45,6 +45,40 @@ const DEFAULT_WORKING_HOURS = {
   "23:00": true
 };
 
+const DEFAULT_VLH_RULES = [
+  { gc_threshold: 6, workers_count: 1 },
+  { gc_threshold: 11, workers_count: 2 },
+  { gc_threshold: 17, workers_count: 3 },
+  { gc_threshold: 22, workers_count: 4 },
+  { gc_threshold: 25, workers_count: 5 },
+  { gc_threshold: 30, workers_count: 6 },
+  { gc_threshold: 35, workers_count: 7 },
+  { gc_threshold: 41, workers_count: 8 },
+  { gc_threshold: 45, workers_count: 9 },
+  { gc_threshold: 55, workers_count: 10 },
+  { gc_threshold: 60, workers_count: 12 },
+  { gc_threshold: 66, workers_count: 13 },
+  { gc_threshold: 71, workers_count: 14 },
+  { gc_threshold: 75, workers_count: 16 },
+  { gc_threshold: 83, workers_count: 17 },
+  { gc_threshold: 90, workers_count: 18 },
+  { gc_threshold: 97, workers_count: 19 },
+  { gc_threshold: 103, workers_count: 20 },
+  { gc_threshold: 109, workers_count: 21 },
+  { gc_threshold: 114, workers_count: 22 },
+  { gc_threshold: 119, workers_count: 23 },
+  { gc_threshold: 125, workers_count: 25 },
+  { gc_threshold: 134, workers_count: 27 },
+  { gc_threshold: 144, workers_count: 28 },
+  { gc_threshold: 154, workers_count: 29 },
+  { gc_threshold: 160, workers_count: 31 },
+  { gc_threshold: 167, workers_count: 32 },
+  { gc_threshold: 176, workers_count: 33 },
+  { gc_threshold: 182, workers_count: 35 },
+  { gc_threshold: 191, workers_count: 37 },
+  { gc_threshold: 221, workers_count: 38 }
+];
+
 function initSettingsForm() {
   const db = window.db;
 
@@ -57,8 +91,11 @@ function initSettingsForm() {
   const dayBody = document.getElementById("dayCoefficientsBody");
   const holidayBody = document.getElementById("holidayBody");
   const workingHoursBody = document.getElementById("workingHoursBody");
+  const vlhRulesBody = document.getElementById("vlhRulesBody");
 
   const addHolidayBtn = document.getElementById("addHolidayBtn");
+  const addVlhRowBtn = document.getElementById("addVlhRowBtn");
+  const loadDefaultVlhBtn = document.getElementById("loadDefaultVlhBtn");
   const saveBtn = document.getElementById("saveSettingsBtn");
   const resetBtn = document.getElementById("resetSettingsBtn");
   const message = document.getElementById("settingsMessage");
@@ -71,7 +108,11 @@ function initSettingsForm() {
   if (nameEl) nameEl.textContent = restaurantName;
   if (idEl) idEl.textContent = restaurantId || "-";
 
+  let vlhRules = [];
+
   function showMessage(text, type = "success") {
+    if (!message) return;
+
     message.textContent = text;
     message.className = type === "error" ? "settings-message error" : "settings-message";
   }
@@ -81,20 +122,26 @@ function initSettingsForm() {
     return Number.isFinite(number) ? number : 0;
   }
 
+  function cloneVlhRules(rules) {
+    return rules.map((rule) => ({
+      gc_threshold: Number(rule.gc_threshold) || 0,
+      workers_count: Number(rule.workers_count) || 0
+    }));
+  }
+
   function initTabs() {
     tabButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const tab = button.dataset.settingsTab;
+        const panel = document.getElementById(`${tab}Panel`);
 
         tabButtons.forEach((btn) => btn.classList.remove("active"));
-        panels.forEach((panel) => panel.classList.remove("active"));
+        panels.forEach((item) => item.classList.remove("active"));
 
         button.classList.add("active");
 
-        if (tab === "worktime") {
-          document.getElementById("worktimePanel").classList.add("active");
-        } else {
-          document.getElementById("coefficientsPanel").classList.add("active");
+        if (panel) {
+          panel.classList.add("active");
         }
       });
     });
@@ -160,7 +207,7 @@ function initSettingsForm() {
       </td>
     `;
 
-    tr.querySelector(".delete-row-btn").addEventListener("click", () => {
+    tr.querySelector(".delete-row-btn")?.addEventListener("click", () => {
       tr.remove();
     });
 
@@ -218,6 +265,56 @@ function initSettingsForm() {
     });
   }
 
+  function renderVlhRules(rules = []) {
+    if (!vlhRulesBody) return;
+
+    vlhRules = cloneVlhRules(rules).sort((a, b) => a.gc_threshold - b.gc_threshold);
+
+    vlhRulesBody.innerHTML = "";
+
+    if (vlhRules.length === 0) {
+      vlhRules.push({ gc_threshold: 0, workers_count: 0 });
+    }
+
+    vlhRules.forEach((rule, index) => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>
+          <input
+            type="number"
+            class="vlh-input vlh-gc-input"
+            data-field="gc_threshold"
+            value="${rule.gc_threshold || ""}"
+            min="0"
+            step="1"
+            placeholder="6"
+          />
+        </td>
+
+        <td>
+          <input
+            type="number"
+            class="vlh-input vlh-workers-input"
+            data-field="workers_count"
+            value="${rule.workers_count || ""}"
+            min="0"
+            step="1"
+            placeholder="1"
+          />
+        </td>
+
+        <td>
+          <button class="delete-row-btn vlh-delete-btn" type="button" data-index="${index}">
+            Удалить
+          </button>
+        </td>
+      `;
+
+      vlhRulesBody.appendChild(tr);
+    });
+  }
+
   function collectDayCoefficients() {
     const result = {};
 
@@ -233,9 +330,9 @@ function initSettingsForm() {
 
     return rows
       .map((row) => {
-        const date = row.querySelector(".holiday-date").value;
-        const name = row.querySelector(".holiday-name").value.trim();
-        const coefficient = normalizeNumber(row.querySelector(".holiday-coeff").value);
+        const date = row.querySelector(".holiday-date")?.value;
+        const name = row.querySelector(".holiday-name")?.value.trim();
+        const coefficient = normalizeNumber(row.querySelector(".holiday-coeff")?.value);
 
         return {
           date,
@@ -256,12 +353,37 @@ function initSettingsForm() {
     return result;
   }
 
+  function collectVlhRules() {
+    if (!vlhRulesBody) return [];
+
+    const rows = Array.from(vlhRulesBody.querySelectorAll("tr"));
+    const rulesMap = new Map();
+
+    rows.forEach((row) => {
+      const gc = Math.round(normalizeNumber(row.querySelector(".vlh-gc-input")?.value));
+      const workers = Math.round(normalizeNumber(row.querySelector(".vlh-workers-input")?.value));
+
+      if (gc > 0 && workers > 0) {
+        rulesMap.set(gc, workers);
+      }
+    });
+
+    return Array.from(rulesMap.entries())
+      .map(([gc_threshold, workers_count]) => ({
+        restaurant_id: restaurantId,
+        gc_threshold,
+        workers_count
+      }))
+      .sort((a, b) => a.gc_threshold - b.gc_threshold);
+  }
+
   async function loadSettings() {
     if (!restaurantId) {
       showMessage("ID ресторана не найден. Войдите заново.", "error");
       renderDayCoefficients(DEFAULT_DAY_COEFFICIENTS);
       renderHolidays([]);
       renderWorkingHours(DEFAULT_WORKING_HOURS);
+      renderVlhRules([]);
       return;
     }
 
@@ -279,6 +401,56 @@ function initSettingsForm() {
     renderDayCoefficients(data?.day_coefficients || DEFAULT_DAY_COEFFICIENTS);
     renderHolidays(data?.holiday_coefficients || []);
     renderWorkingHours(data?.working_hours || DEFAULT_WORKING_HOURS);
+
+    await loadVlhRules();
+  }
+
+  async function loadVlhRules() {
+    if (!vlhRulesBody || !restaurantId) return;
+
+    const { data, error } = await db
+      .from("vlh_rules")
+      .select("gc_threshold, workers_count")
+      .eq("restaurant_id", restaurantId)
+      .order("gc_threshold", { ascending: true });
+
+    if (error) {
+      console.error(error);
+      showMessage("Ошибка загрузки VLH.", "error");
+      renderVlhRules([]);
+      return;
+    }
+
+    renderVlhRules(data || []);
+  }
+
+  async function saveVlhRules() {
+    if (!vlhRulesBody || !restaurantId) return;
+
+    const rules = collectVlhRules();
+
+    if (rules.length === 0) {
+      return;
+    }
+
+    const { error: deleteError } = await db
+      .from("vlh_rules")
+      .delete()
+      .eq("restaurant_id", restaurantId);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
+    const { error: insertError } = await db
+      .from("vlh_rules")
+      .insert(rules);
+
+    if (insertError) {
+      throw insertError;
+    }
+
+    renderVlhRules(rules);
   }
 
   async function saveSettings() {
@@ -312,6 +484,8 @@ function initSettingsForm() {
 
       if (error) throw error;
 
+      await saveVlhRules();
+
       showMessage("Настройки сохранены.");
     } catch (error) {
       console.error(error);
@@ -326,12 +500,13 @@ function initSettingsForm() {
     renderDayCoefficients(DEFAULT_DAY_COEFFICIENTS);
     renderHolidays([]);
     renderWorkingHours(DEFAULT_WORKING_HOURS);
+    renderVlhRules(DEFAULT_VLH_RULES);
     showMessage("Значения сброшены. Нажмите “Сохранить настройки”.");
   }
 
   initTabs();
 
-  addHolidayBtn.addEventListener("click", () => {
+  addHolidayBtn?.addEventListener("click", () => {
     createHolidayRow({
       date: "",
       name: "",
@@ -339,8 +514,41 @@ function initSettingsForm() {
     });
   });
 
-  saveBtn.addEventListener("click", saveSettings);
-  resetBtn.addEventListener("click", resetSettings);
+  addVlhRowBtn?.addEventListener("click", () => {
+    const currentRules = collectVlhRules();
+
+    currentRules.push({
+      restaurant_id: restaurantId,
+      gc_threshold: 0,
+      workers_count: 0
+    });
+
+    renderVlhRules(currentRules);
+  });
+
+  loadDefaultVlhBtn?.addEventListener("click", () => {
+    renderVlhRules(DEFAULT_VLH_RULES);
+    showMessage("Стандартный VLH загружен. Нажмите “Сохранить настройки”.");
+  });
+
+  vlhRulesBody?.addEventListener("click", (event) => {
+    const button = event.target.closest(".vlh-delete-btn");
+
+    if (!button) return;
+
+    const rows = Array.from(vlhRulesBody.querySelectorAll("tr"));
+    const row = button.closest("tr");
+    const index = rows.indexOf(row);
+
+    if (index >= 0) {
+      const currentRules = collectVlhRules();
+      currentRules.splice(index, 1);
+      renderVlhRules(currentRules);
+    }
+  });
+
+  saveBtn?.addEventListener("click", saveSettings);
+  resetBtn?.addEventListener("click", resetSettings);
 
   loadSettings();
 }

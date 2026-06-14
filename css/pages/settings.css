@@ -28,6 +28,59 @@
   font-size: 20px;
 }
 
+.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: #f3f4f6;
+  padding: 6px;
+  border-radius: 16px;
+  width: fit-content;
+}
+
+.settings-tab {
+  border: none;
+  background: transparent;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 900;
+  color: #6b7280;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.settings-tab:hover {
+  color: #111827;
+}
+
+.settings-tab.active {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.1);
+}
+
+.settings-panel {
+  display: none;
+}
+
+.settings-panel.active {
+  display: grid;
+  gap: 22px;
+}
+
+.settings-panel .section-head .actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.settings-panel .section-head .actions button {
+  white-space: nowrap;
+}
+
 .settings-table {
   width: 100%;
   min-width: 520px;
@@ -67,44 +120,12 @@
   border-radius: 11px;
   outline: none;
   font-size: 14px;
+  font-weight: 700;
 }
 
 .settings-table input:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-}
-
-.settings-message {
-  min-height: 20px;
-  margin: 14px 0 0;
-  font-size: 14px;
-  font-weight: 800;
-  color: #16a34a;
-}
-
-.settings-message.error {
-  color: #dc2626;
-}
-
-@media (max-width: 700px) {
-  .settings-info {
-    grid-template-columns: 1fr;
-  }
-}
-
-.delete-row-btn {
-  height: 36px;
-  padding: 0 12px;
-  border: none;
-  border-radius: 10px;
-  background: rgba(220, 38, 38, 0.1);
-  color: #dc2626;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.delete-row-btn:hover {
-  background: rgba(220, 38, 38, 0.18);
 }
 
 .settings-table input[type="date"],
@@ -117,38 +138,49 @@
   width: 140px;
 }
 
-.settings-tabs {
-  display: flex;
-  gap: 10px;
-  background: #f3f4f6;
-  padding: 6px;
-  border-radius: 16px;
-  width: fit-content;
-}
-
-.settings-tab {
+.delete-row-btn {
+  height: 36px;
+  padding: 0 12px;
   border: none;
-  background: transparent;
-  padding: 12px 18px;
-  border-radius: 12px;
+  border-radius: 10px;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
   font-weight: 900;
-  color: #6b7280;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.settings-tab.active {
-  background: #ffffff;
-  color: #111827;
-  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.1);
+.delete-row-btn:hover {
+  background: rgba(220, 38, 38, 0.18);
 }
 
-.settings-panel {
-  display: none;
+#vlhPanel .settings-table {
+  min-width: 420px;
 }
 
-.settings-panel.active {
-  display: grid;
-  gap: 22px;
+#vlhPanel .settings-table th:first-child,
+#vlhPanel .settings-table td:first-child,
+#vlhPanel .settings-table th:nth-child(2),
+#vlhPanel .settings-table td:nth-child(2) {
+  width: 220px;
+}
+
+#vlhPanel .settings-table th:last-child,
+#vlhPanel .settings-table td:last-child {
+  width: 120px;
+  text-align: right;
+}
+
+#vlhPanel .settings-table input[type="number"] {
+  width: 160px;
+  font-weight: 900;
+}
+
+.vlh-empty-row td {
+  color: #6b7280;
+  font-weight: 800;
+  text-align: center;
+  padding: 22px 16px;
 }
 
 .worktime-grid {
@@ -195,29 +227,16 @@
   color: #dc2626;
 }
 
-.delete-row-btn {
-  height: 36px;
-  padding: 0 12px;
-  border: none;
-  border-radius: 10px;
-  background: rgba(220, 38, 38, 0.1);
+.settings-message {
+  min-height: 20px;
+  margin: 14px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+.settings-message.error {
   color: #dc2626;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.delete-row-btn:hover {
-  background: rgba(220, 38, 38, 0.18);
-}
-
-.settings-table input[type="date"],
-.settings-table input[type="text"] {
-  width: 100%;
-  max-width: 260px;
-}
-
-.settings-table input[type="number"] {
-  width: 140px;
 }
 
 @media (max-width: 1100px) {
@@ -227,15 +246,35 @@
 }
 
 @media (max-width: 700px) {
-  .worktime-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .settings-info {
+    grid-template-columns: 1fr;
   }
 
   .settings-tabs {
+    display: grid;
+    grid-template-columns: 1fr;
     width: 100%;
   }
 
   .settings-tab {
     width: 100%;
+    text-align: center;
+  }
+
+  .settings-panel .section-head .actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .settings-panel .section-head .actions button {
+    width: 100%;
+  }
+
+  .worktime-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #vlhPanel .settings-table input[type="number"] {
+    width: 130px;
   }
 }
