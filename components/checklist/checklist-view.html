@@ -1,0 +1,69 @@
+<div class="checklist-grid">
+  <div class="checklist-sheet-header">
+    <div class="checklist-logo-left">
+      <img src="../images/im-logo.png" alt="I'M" />
+    </div>
+
+    <div class="checklist-header-center">
+      <h2>ЖЕЛАЕМ УДАЧНОЙ СМЕНЫ !</h2>
+
+      <div class="checklist-managers-row">
+        <label>
+          Менеджер утро:
+          <input type="text" id="checklistMorningManager" />
+        </label>
+
+        <label>
+          вечер:
+          <input type="text" id="checklistEveningManager" />
+        </label>
+
+        <label>
+          ночь:
+          <input type="text" id="checklistNightManager" />
+        </label>
+      </div>
+    </div>
+
+    <div class="checklist-header-right">
+      <label class="checklist-date-line">
+        <span>Дата</span>
+        <input type="date" id="checklistDateInput" />
+      </label>
+
+      <button id="checklistPdfBtn" type="button" class="checklist-pdf-btn">
+        Скачать PDF
+      </button>
+
+      <img src="../images/im-round-logo.png" alt="I'M" />
+    </div>
+  </div>
+
+  <div class="checklist-tabs">
+    <button class="checklist-tab active" type="button" data-checklist-tab="preparation">
+      Подготовка к смене
+    </button>
+
+    <button class="checklist-tab" type="button" data-checklist-tab="goals">
+      Цели и приоритеты
+    </button>
+
+    <button class="checklist-tab" type="button" data-checklist-tab="during-shift">
+      В течение смены
+    </button>
+
+    <button class="checklist-tab" type="button" data-checklist-tab="hourly">
+      Почасовая
+    </button>
+
+    <button class="checklist-tab" type="button" data-checklist-tab="after-shift">
+      Итоги дня
+    </button>
+  </div>
+
+  <div id="checklistTabContent">
+    <div class="card">
+      <p>Загрузка вкладки...</p>
+    </div>
+  </div>
+</div>

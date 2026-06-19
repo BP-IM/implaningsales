@@ -1,0 +1,150 @@
+.after-shift-tab {
+  width: 100%;
+}
+
+.after-shift-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.after-shift-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+}
+
+.after-shift-excel-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.after-shift-excel-table th,
+.after-shift-excel-table td {
+  border: 1px solid #000000;
+  padding: 3px 5px;
+  vertical-align: top;
+}
+
+.after-shift-excel-table th {
+  font-weight: 900;
+  text-align: center;
+}
+
+.after-main-title {
+  height: 38px;
+  background: #fff2cc;
+  color: #000000;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.after-col-small {
+  width: 48px;
+}
+
+.after-col-task {
+  width: auto;
+}
+
+.after-task-text {
+  min-height: 24px;
+  font-weight: 500;
+}
+
+.after-task-text.important {
+  color: #e00000;
+  font-weight: 900;
+}
+
+.after-check-cell {
+  height: 25px;
+  text-align: center;
+  vertical-align: middle !important;
+  cursor: pointer;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 900;
+  user-select: none;
+}
+
+.after-check-cell:hover {
+  background: #f3f4f6;
+}
+
+.after-check-cell.checked {
+  color: #111827;
+}
+
+.after-check-cell.checked::after {
+  content: "✓";
+}
+
+.after-priorities {
+  min-width: 1120px;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  background: #ffffff;
+}
+
+.after-priorities-main-title {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffc000;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-size: 32px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.after-priority-title {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #fff2cc;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-size: 24px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0 44px;
+  box-sizing: border-box;
+}
+
+.after-priority-input {
+  width: 100%;
+  min-height: 42px;
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
+  resize: vertical;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  color: #000000;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.after-priority-input:focus {
+  background: #fffde7;
+}
+
+@media (max-width: 900px) {
+  .after-shift-excel-table,
+  .after-priorities {
+    min-width: 1120px;
+  }
+}

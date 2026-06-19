@@ -1,0 +1,306 @@
+.checklist-grid {
+  display: grid;
+  gap: 22px;
+  overflow-x: auto;
+}
+
+/* =========================
+   EXCEL STYLE HEADER
+========================= */
+
+.checklist-sheet-header {
+  width: 100%;
+  min-width: 1080px;
+  min-height: 120px;
+  display: grid;
+  grid-template-columns: 150px 1fr 300px;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 2px solid #f2c400;
+  padding: 8px 16px;
+  box-sizing: border-box;
+}
+
+.checklist-logo-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.checklist-logo-left img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.checklist-header-center {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.checklist-header-center h2 {
+  margin: 0 0 26px;
+  color: #f2c400;
+  font-size: 25px;
+  line-height: 1;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.checklist-managers-row {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 42px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.checklist-managers-row label {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  color: #000000;
+  font-family: "Times New Roman", serif;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.checklist-managers-row input {
+  width: 115px;
+  height: 24px;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+  outline: none;
+  color: #000000;
+  font-family: "Times New Roman", serif;
+  font-size: 22px;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.checklist-managers-row input::placeholder {
+  color: transparent;
+}
+
+.checklist-header-right {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 88px;
+  align-items: center;
+  gap: 12px;
+}
+
+.checklist-date-line {
+  align-self: start;
+  margin-top: 2px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: flex-end;
+  color: #000000;
+  font-family: "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.checklist-date-line span {
+  line-height: 28px;
+}
+
+.checklist-date-line input {
+  width: 150px;
+  height: 28px;
+  border: none;
+  border-bottom: 1px solid #000000;
+  background: transparent;
+  outline: none;
+  color: #000000;
+  font-family: "Times New Roman", serif;
+  font-size: 18px;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.checklist-header-right img {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.checklist-tabs {
+  display: flex;
+  gap: 10px;
+  background: #f3f4f6;
+  padding: 6px;
+  border-radius: 16px;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.checklist-tab {
+  border: none;
+  background: transparent;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 900;
+  color: #6b7280;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.checklist-tab.active {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 5px 15px rgba(15, 23, 42, 0.1);
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.checklist-progress {
+  min-width: 78px;
+  height: 38px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.checklist-table th:nth-child(1) {
+  width: 190px;
+}
+
+.checklist-table th:nth-child(3) {
+  width: 130px;
+  text-align: center;
+}
+
+.checklist-table th:nth-child(4) {
+  width: 300px;
+}
+
+.checklist-table td:nth-child(3) {
+  text-align: center;
+}
+
+.checklist-table input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.checklist-table textarea,
+.checklist-table input[type="text"] {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid #d1d5db;
+  border-radius: 11px;
+  padding: 9px 12px;
+  outline: none;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.checklist-table textarea:focus,
+.checklist-table input[type="text"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.checklist-summary {
+  width: 100%;
+  min-height: 110px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  padding: 14px 16px;
+  outline: none;
+  font-size: 15px;
+  resize: vertical;
+  margin-bottom: 18px;
+}
+
+.checklist-summary:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .checklist-sheet-header {
+    min-width: 1080px;
+  }
+}
+
+@media (max-width: 700px) {
+  .checklist-tabs {
+    width: 100%;
+  }
+
+  .checklist-tab {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+}
+/* =========================
+   ПДФ КНОПКА
+========================= */
+
+.checklist-header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.checklist-pdf-btn {
+  border: 1px solid #111827;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.checklist-pdf-btn:hover {
+  background: #000000;
+}
+
+.checklist-pdf-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}

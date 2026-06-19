@@ -1,0 +1,38 @@
+<div class="during-shift-tab">
+  <div class="during-shift-actions">
+    <button class="secondary-btn" id="duringShiftSelectAllBtn" type="button">
+      Выбрать все
+    </button>
+
+    <button class="secondary-btn" id="duringShiftClearAllBtn" type="button">
+      Снять все
+    </button>
+  </div>
+
+  <div class="during-shift-table-scroll">
+    <table class="during-shift-excel-table" id="duringShiftTable">
+      <colgroup>
+        <col class="during-col-small" />
+        <col class="during-col-small" />
+        <col class="during-col-task" />
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th class="during-main-title" colspan="3">В ТЕЧЕНИЕ СМЕНЫ</th>
+        </tr>
+      </thead>
+
+      <tbody id="duringShiftBody">
+        <tr>
+          <td colspan="3">Загрузка...</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="during-todo-block">
+      <div class="during-todo-title">List TO DO</div>
+      <textarea id="duringShiftTodoInput" class="during-todo-input"></textarea>
+    </div>
+  </div>
+</div>

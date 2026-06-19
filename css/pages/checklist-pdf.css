@@ -1,0 +1,1040 @@
+@page {
+  size: A4 portrait;
+  margin: 5mm;
+}
+
+.pdf-print-body * {
+  box-sizing: border-box;
+}
+
+html,
+body.pdf-print-body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body.pdf-print-body {
+  width: 200mm;
+  margin: 0 auto;
+}
+
+.pdf-print-body .pdf-page {
+  width: 200mm;
+  background: #ffffff;
+  padding: 0;
+  page-break-after: always;
+  break-after: page;
+}
+
+.pdf-print-body .pdf-page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+/* =========================
+   PDF HEADER
+========================= */
+
+.pdf-print-body .pdf-sheet-header {
+  width: 100%;
+  min-height: 27mm;
+  display: grid;
+  grid-template-columns: 24mm 1fr 38mm;
+  align-items: center;
+  gap: 2mm;
+  background: #ffffff;
+  border: 1.2px solid #f2c400;
+  padding: 2mm 3mm;
+  margin: 0 0 2.5mm;
+}
+
+.pdf-print-body .pdf-logo-left,
+.pdf-print-body .pdf-logo-right {
+  display: flex;
+  align-items: center;
+}
+
+.pdf-print-body .pdf-logo-left {
+  justify-content: flex-start;
+}
+
+.pdf-print-body .pdf-logo-left img {
+  width: 20mm;
+  height: 20mm;
+  object-fit: contain;
+  display: block;
+}
+
+.pdf-print-body .pdf-header-center {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-print-body .pdf-header-center h2 {
+  margin: 0 0 7mm;
+  color: #f2c400;
+  font-size: 12.5pt;
+  line-height: 1;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pdf-print-body .pdf-managers-row {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5mm;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.pdf-print-body .pdf-manager-item,
+.pdf-print-body .pdf-date-line {
+  color: #000000;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 9.5pt;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pdf-print-body .pdf-line-value {
+  display: inline-block;
+  min-width: 18mm;
+  border-bottom: 0.8px solid #000000;
+  padding: 0 1mm 0.5mm;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 9.5pt;
+  line-height: 1;
+}
+
+.pdf-print-body .pdf-header-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3mm;
+}
+
+.pdf-print-body .pdf-date-line {
+  align-self: flex-start;
+  margin-top: 1mm;
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+  font-size: 9.5pt;
+  font-weight: 700;
+}
+
+.pdf-print-body .pdf-date-line .pdf-line-value {
+  min-width: 22mm;
+  font-size: 8.5pt;
+}
+
+.pdf-print-body .pdf-logo-right img {
+  width: 18mm;
+  height: 18mm;
+  object-fit: contain;
+  display: block;
+}
+
+/* =========================
+   PDF COMMON
+========================= */
+
+.pdf-print-body .pdf-content {
+  width: 100%;
+  overflow: visible !important;
+}
+
+.pdf-print-body .pdf-content *,
+.pdf-print-body .preparation-tab *,
+.pdf-print-body .preparation-table-scroll * {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+.pdf-print-body .preparation-tab,
+.pdf-print-body .preparation-table-scroll {
+  width: 100% !important;
+  overflow: visible !important;
+  background: #ffffff !important;
+}
+
+.pdf-print-body .preparation-actions,
+.pdf-print-body .secondary-btn,
+.pdf-print-body .goals-plan-sync,
+.pdf-print-body .goals-previous-sync,
+.pdf-print-body .hourly-plan-sync,
+.pdf-print-body .hourly-loading,
+.pdf-print-body .checklist-progress,
+.pdf-print-body .checklist-tabs,
+.pdf-print-body .tabs,
+.pdf-print-body .tab-buttons,
+.pdf-print-body .checklist-pdf-btn,
+.pdf-print-body .checklist-loading,
+.pdf-print-body .loading {
+  display: none !important;
+}
+
+/* =========================
+   PREPARATION PDF TABLE
+========================= */
+
+.pdf-print-body .preparation-excel-table {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 6.6pt !important;
+  line-height: 1.1 !important;
+}
+
+.pdf-print-body .preparation-excel-table col.prep-col-small {
+  width: 5.5% !important;
+}
+
+.pdf-print-body .preparation-excel-table col.prep-col-task {
+  width: 43% !important;
+}
+
+.pdf-print-body .preparation-excel-table col.prep-col-shelf {
+  width: 20% !important;
+}
+
+.pdf-print-body .preparation-excel-table col.prep-col-shelf-check {
+  width: 13% !important;
+}
+
+.pdf-print-body .preparation-excel-table th,
+.pdf-print-body .preparation-excel-table td {
+  border: 0.8px solid #000000 !important;
+  padding: 0.8mm 1mm !important;
+  vertical-align: top !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+}
+
+.pdf-print-body .preparation-excel-table th {
+  text-align: center !important;
+  font-weight: 800 !important;
+}
+
+.pdf-print-body .preparation-excel-table thead {
+  display: table-header-group;
+}
+
+.pdf-print-body .preparation-excel-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .prep-title {
+  height: auto !important;
+  background: #fff2cc !important;
+  font-size: 13pt !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+  padding: 1.5mm 1mm !important;
+}
+
+.pdf-print-body .prep-shelf-title {
+  font-size: 7.2pt !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .prep-category {
+  background: #fff2cc !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+.pdf-print-body .prep-task-text {
+  min-height: 0 !important;
+  font-weight: 500 !important;
+}
+
+.pdf-print-body .prep-task-text.important {
+  color: #e00000 !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .prep-check-cell {
+  height: 4.8mm !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-size: 9pt !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .prep-check-cell.checked::after {
+  content: "✓";
+}
+
+.pdf-print-body .prep-shelf-name {
+  font-weight: 500 !important;
+}
+
+.pdf-print-body .preparation-excel-table .pdf-control-value {
+  width: 100% !important;
+  min-height: 4.5mm !important;
+  padding: 0 !important;
+  text-align: center !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  font: inherit !important;
+}
+
+.pdf-print-body .pdf-control-value {
+  width: 100%;
+  min-height: 18px;
+  padding: 2px 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: inherit;
+}
+
+.pdf-print-body .pdf-checkbox-value {
+  text-align: center;
+  font-size: 12pt;
+  font-weight: 800;
+}
+
+.pdf-print-body input,
+.pdf-print-body textarea,
+.pdf-print-body button,
+.pdf-print-body select {
+  font: inherit;
+}
+
+@media print {
+  html,
+  body.pdf-print-body {
+    width: auto;
+    margin: 0;
+  }
+
+  .pdf-print-body .pdf-page {
+    width: 100%;
+  }
+}
+
+/* =========================
+   GOALS PDF TABLE
+========================= */
+
+.pdf-print-body .goals-tab,
+.pdf-print-body .goals-table-scroll {
+  width: 100% !important;
+  overflow: visible !important;
+  background: #ffffff !important;
+}
+
+.pdf-print-body .goals-excel-table,
+.pdf-print-body .goals-priorities {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.pdf-print-body .goals-excel-table {
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 6.2pt !important;
+  line-height: 1.08 !important;
+}
+
+.pdf-print-body .goals-excel-table col.goals-col-metric {
+  width: 14% !important;
+}
+
+.pdf-print-body .goals-excel-table col.goals-col-value {
+  width: 18% !important;
+}
+
+.pdf-print-body .goals-excel-table col.goals-col-percent {
+  width: 6% !important;
+}
+
+.pdf-print-body .goals-excel-table col.goals-col-reason {
+  width: 26% !important;
+}
+
+.pdf-print-body .goals-excel-table th,
+.pdf-print-body .goals-excel-table td {
+  border: 0.8px solid #000000 !important;
+  padding: 0.8mm 1mm !important;
+  vertical-align: middle !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+}
+
+.pdf-print-body .goals-excel-table th {
+  text-align: center !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .goals-excel-table thead {
+  display: table-header-group;
+}
+
+.pdf-print-body .goals-excel-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .goals-main-title {
+  height: auto !important;
+  background: #ffc000 !important;
+  font-size: 13pt !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+  padding: 1.6mm 1mm !important;
+}
+
+.pdf-print-body .goals-sub-title {
+  height: auto !important;
+  background: #fff2cc !important;
+  font-size: 9pt !important;
+  line-height: 1.15 !important;
+  text-align: left !important;
+  padding: 1.2mm 1mm 1.2mm 12mm !important;
+}
+
+.pdf-print-body .goals-sub-title span {
+  font-weight: 500 !important;
+}
+
+.pdf-print-body .goals-excel-table thead tr:nth-child(3) th {
+  background: #fff2cc !important;
+  font-size: 6.8pt !important;
+  line-height: 1.15 !important;
+}
+
+.pdf-print-body .goals-excel-table thead tr:nth-child(3) th small {
+  display: block !important;
+  margin-top: 1mm !important;
+  font-size: 5.8pt !important;
+  font-weight: 500 !important;
+}
+
+.pdf-print-body .goals-metric-name {
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .goals-tall-row td {
+  height: auto !important;
+  min-height: 9mm !important;
+}
+
+.pdf-print-body .goals-percent-title {
+  font-size: 7pt !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+}
+
+.pdf-print-body .goals-excel-table .pdf-control-value {
+  width: 100% !important;
+  min-height: 4.5mm !important;
+  padding: 0 !important;
+  text-align: center !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  font: inherit !important;
+}
+
+.pdf-print-body .goals-excel-table td:last-child .pdf-control-value {
+  text-align: left !important;
+}
+
+.pdf-print-body .goals-waste-row .pdf-control-value,
+.pdf-print-body .goals-textarea-field + .pdf-control-value {
+  text-align: left !important;
+}
+
+/* =========================
+   GOALS PRIORITIES PDF
+========================= */
+
+.pdf-print-body .goals-priorities {
+  border-left: 0.8px solid #000000 !important;
+  border-right: 0.8px solid #000000 !important;
+  border-bottom: 0.8px solid #000000 !important;
+  background: #ffffff !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .goals-priorities-title {
+  height: auto !important;
+  min-height: 8mm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffc000 !important;
+  border-bottom: 0.8px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 13pt !important;
+  font-weight: 900 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  padding: 1.5mm 1mm !important;
+}
+
+.pdf-print-body .goals-priority-title {
+  height: auto !important;
+  min-height: 6mm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #fff2cc !important;
+  border-bottom: 0.8px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 9pt !important;
+  font-weight: 900 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  padding: 1mm !important;
+}
+
+.pdf-print-body .goals-priority-block {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .goals-priority-block .pdf-control-value {
+  width: 100% !important;
+  min-height: 16mm !important;
+  border-bottom: 0.8px solid #000000 !important;
+  padding: 2mm !important;
+  text-align: left !important;
+  font-size: 7.2pt !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+.pdf-print-body .goals-priority-block:last-child .pdf-control-value {
+  border-bottom: none !important;
+}
+
+/* =========================
+   PDF Duddring
+========================= */
+/* =========================
+   DURING SHIFT PDF TABLE
+========================= */
+
+.pdf-print-body .during-shift-tab,
+.pdf-print-body .during-shift-table-scroll {
+  width: 100% !important;
+  overflow: visible !important;
+  background: #ffffff !important;
+}
+
+.pdf-print-body .during-shift-excel-table,
+.pdf-print-body .during-todo-block {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.pdf-print-body .during-shift-excel-table {
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 7pt !important;
+  line-height: 1.12 !important;
+}
+
+.pdf-print-body .during-shift-excel-table col.during-col-small {
+  width: 6% !important;
+}
+
+.pdf-print-body .during-shift-excel-table col.during-col-task {
+  width: 88% !important;
+}
+
+.pdf-print-body .during-shift-excel-table th,
+.pdf-print-body .during-shift-excel-table td {
+  border: 0.8px solid #000000 !important;
+  padding: 0.8mm 1mm !important;
+  vertical-align: top !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+}
+
+.pdf-print-body .during-shift-excel-table th {
+  text-align: center !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .during-shift-excel-table thead {
+  display: table-header-group;
+}
+
+.pdf-print-body .during-shift-excel-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .during-main-title {
+  height: auto !important;
+  background: #ffc000 !important;
+  color: #000000 !important;
+  font-size: 14pt !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+  padding: 1.6mm 1mm !important;
+}
+
+.pdf-print-body .during-category {
+  background: #fff2cc !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  font-size: 9pt !important;
+  line-height: 1.1 !important;
+}
+
+.pdf-print-body .during-category.warning {
+  background: #ffc000 !important;
+  font-size: 9pt !important;
+}
+
+.pdf-print-body .during-task-text {
+  min-height: 0 !important;
+  font-weight: 500 !important;
+}
+
+.pdf-print-body .during-task-text.important {
+  color: #e00000 !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .during-check-cell {
+  height: 4.8mm !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-size: 9pt !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .during-check-cell.checked::after {
+  content: "✓";
+}
+
+/* =========================
+   DURING SHIFT TODO PDF
+========================= */
+
+.pdf-print-body .during-todo-block {
+  border-left: 0.8px solid #000000 !important;
+  border-right: 0.8px solid #000000 !important;
+  border-bottom: 0.8px solid #000000 !important;
+  background: #ffffff !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .during-todo-title {
+  height: auto !important;
+  min-height: 7mm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #fff2cc !important;
+  border-bottom: 0.8px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 10pt !important;
+  font-weight: 900 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  padding: 1mm !important;
+}
+
+.pdf-print-body .during-todo-block .pdf-control-value {
+  width: 100% !important;
+  min-height: 36mm !important;
+  border: none !important;
+  padding: 2mm !important;
+  text-align: left !important;
+  font-size: 7.2pt !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+
+/* =========================
+   HOURLY PDF
+========================= */
+
+.pdf-print-body .hourly-tab,
+.pdf-print-body .hourly-table-scroll {
+  width: 100% !important;
+  overflow: visible !important;
+  background: #ffffff !important;
+}
+
+.pdf-print-body .hourly-block,
+.pdf-print-body .hourly-excel-table,
+.pdf-print-body .hourly-status-title,
+.pdf-print-body .hourly-priority-row,
+.pdf-print-body .hourly-loading {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.pdf-print-body .hourly-block {
+  margin-bottom: 3mm !important;
+  background: #ffffff !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .hourly-excel-table {
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 4.7pt !important;
+  line-height: 1.05 !important;
+}
+
+.pdf-print-body .hourly-excel-table th,
+.pdf-print-body .hourly-excel-table td {
+  border: 0.6px solid #000000 !important;
+  padding: 0.55mm 0.45mm !important;
+  vertical-align: middle !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+}
+
+.pdf-print-body .hourly-excel-table th {
+  text-align: center !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .hourly-excel-table thead {
+  display: table-header-group;
+}
+
+.pdf-print-body .hourly-excel-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .hourly-main-title {
+  height: auto !important;
+  background: #ffc000 !important;
+  color: #000000 !important;
+  font-size: 10pt !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  padding: 1mm !important;
+}
+
+.pdf-print-body .hourly-group-title {
+  background: #ffffff !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+}
+
+.pdf-print-body .hourly-sub-title {
+  background: #ffffff !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+.pdf-print-body .hourly-time-col {
+  width: 5.5% !important;
+}
+
+.pdf-print-body .hourly-small-col {
+  width: 4.3% !important;
+}
+
+.pdf-print-body .hourly-medium-col {
+  width: 6.4% !important;
+}
+
+.pdf-print-body .hourly-wide-col {
+  width: 8% !important;
+}
+
+.pdf-print-body .hourly-time-cell {
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+
+.pdf-print-body .hourly-plan-cell {
+  background: #ffff00 !important;
+}
+
+.pdf-print-body .hourly-fact-cell {
+  background: #9ed3df !important;
+}
+
+.pdf-print-body .hourly-avcheck-cell {
+  background: #ddd9e8 !important;
+}
+
+.pdf-print-body .hourly-gcpch-cell {
+  background: #f8cbad !important;
+}
+
+.pdf-print-body .hourly-oepe-cell {
+  background: #9ed3df !important;
+}
+
+.pdf-print-body .hourly-total-row td {
+  background: #92d050 !important;
+  font-weight: 700 !important;
+}
+
+.pdf-print-body .hourly-excel-table .pdf-control-value {
+  width: 100% !important;
+  min-height: 3.5mm !important;
+  padding: 0 !important;
+  text-align: center !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  font: inherit !important;
+}
+
+.pdf-print-body .hourly-disabled-by-rule,
+.pdf-print-body .hourly-excel-table input[readonly] {
+  color: #000000 !important;
+}
+
+/* =========================
+   HOURLY PRIORITIES PDF
+========================= */
+
+.pdf-print-body .hourly-status-title {
+  height: auto !important;
+  min-height: 6mm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffc000 !important;
+  border-left: 0.6px solid #000000 !important;
+  border-right: 0.6px solid #000000 !important;
+  border-bottom: 0.6px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 7pt !important;
+  font-weight: 700 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  padding: 1mm !important;
+}
+
+.pdf-print-body .hourly-priority-row {
+  display: grid !important;
+  grid-template-columns: 25mm 1fr !important;
+  min-height: 10mm !important;
+  border-left: 0.6px solid #000000 !important;
+  border-right: 0.6px solid #000000 !important;
+  border-bottom: 0.6px solid #000000 !important;
+  background: #ffffff !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .hourly-priority-label {
+  display: flex !important;
+  align-items: flex-start !important;
+  padding: 1.5mm 1mm !important;
+  color: #000000 !important;
+  font-size: 7pt !important;
+  font-weight: 900 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.pdf-print-body .hourly-priority-row .pdf-control-value {
+  width: 100% !important;
+  min-height: 10mm !important;
+  border-left: 0.6px solid #000000 !important;
+  padding: 1.5mm !important;
+  text-align: left !important;
+  font-size: 6.5pt !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+
+/* =========================
+   AFTER SHIFT PDF
+========================= */
+
+.pdf-print-body .after-shift-tab,
+.pdf-print-body .after-shift-table-scroll {
+  width: 100% !important;
+  overflow: visible !important;
+  background: #ffffff !important;
+}
+
+.pdf-print-body .after-shift-excel-table,
+.pdf-print-body .after-priorities {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.pdf-print-body .after-shift-excel-table {
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 8pt !important;
+  line-height: 1.12 !important;
+}
+
+.pdf-print-body .after-shift-excel-table col.after-col-small {
+  width: 6% !important;
+}
+
+.pdf-print-body .after-shift-excel-table col.after-col-task {
+  width: 88% !important;
+}
+
+.pdf-print-body .after-shift-excel-table th,
+.pdf-print-body .after-shift-excel-table td {
+  border: 0.8px solid #000000 !important;
+  padding: 0.9mm 1mm !important;
+  vertical-align: top !important;
+  word-break: break-word !important;
+  white-space: normal !important;
+}
+
+.pdf-print-body .after-shift-excel-table th {
+  text-align: center !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .after-shift-excel-table thead {
+  display: table-header-group;
+}
+
+.pdf-print-body .after-shift-excel-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .after-main-title {
+  height: auto !important;
+  background: #fff2cc !important;
+  color: #000000 !important;
+  font-size: 14pt !important;
+  line-height: 1 !important;
+  letter-spacing: 0.2px !important;
+  padding: 1.5mm 1mm !important;
+}
+
+.pdf-print-body .after-task-text {
+  min-height: 0 !important;
+  font-weight: 500 !important;
+}
+
+.pdf-print-body .after-task-text.important {
+  color: #e00000 !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .after-check-cell {
+  height: 4.8mm !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-size: 9pt !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+}
+
+.pdf-print-body .after-check-cell.checked::after {
+  content: "✓";
+}
+
+/* =========================
+   AFTER SHIFT PRIORITIES PDF
+========================= */
+
+.pdf-print-body .after-priorities {
+  border-left: 0.8px solid #000000 !important;
+  border-right: 0.8px solid #000000 !important;
+  border-bottom: 0.8px solid #000000 !important;
+  background: #ffffff !important;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .after-priorities-main-title {
+  height: auto !important;
+  min-height: 8mm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffc000 !important;
+  border-bottom: 0.8px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 14pt !important;
+  font-weight: 900 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  padding: 1.5mm 1mm !important;
+}
+
+.pdf-print-body .after-priority-block {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.pdf-print-body .after-priority-title {
+  min-height: 7mm !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  background: #fff2cc !important;
+  border-bottom: 0.8px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 8.5pt !important;
+  font-weight: 900 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  padding: 1mm 6mm !important;
+  box-sizing: border-box !important;
+}
+
+.pdf-print-body .after-priority-block .pdf-control-value {
+  width: 100% !important;
+  min-height: 13mm !important;
+  border-bottom: 0.8px solid #000000 !important;
+  padding: 2mm !important;
+  text-align: left !important;
+  font-size: 7.2pt !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+.pdf-print-body .after-priority-block:last-child .pdf-control-value {
+  border-bottom: none !important;
+}

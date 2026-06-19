@@ -20,10 +20,10 @@ function initDashboardView() {
   const hourlyTable = document.getElementById("dashboardHourlyTable");
 
   const selectedActions = document.getElementById("selectedActions");
-  // const copySelectedBtn = document.getElementById("copySelectedBtn");
   const clearSelectionBtn = document.getElementById("clearSelectionBtn");
 
   let currentHourlyPlans = [];
+  let vlhRules = [];
   let autoCopyTimer = null;
 
   let selection = {
@@ -41,6 +41,60 @@ function initDashboardView() {
   function formatNumber(value) {
     return Math.round(Number(value) || 0).toLocaleString("ru-RU");
   }
+
+  async function loadVlhRules() {
+    if (!restaurantId) {
+      vlhRules = [];
+      return;
+    }
+
+    const { data, error } = await db
+      .from("vlh_rules")
+      .select("gc_threshold, workers_count")
+      .eq("restaurant_id", restaurantId)
+      .order("gc_threshold", { ascending: true });
+
+    if (error) {
+      console.error("Ошибка загрузки VLH:", error);
+      vlhRules = [];
+      return;
+    }
+
+    vlhRules = (data || [])
+      .map((rule) => ({
+        gc_threshold: Math.round(Number(rule.gc_threshold) || 0),
+        workers_count: Math.round(Number(rule.workers_count) || 0)
+      }))
+      .filter((rule) => rule.gc_threshold > 0 && rule.workers_count > 0)
+      .sort((a, b) => a.gc_threshold - b.gc_threshold);
+  }
+
+  function getWorkersCountByGc(gcValue) {
+  const gc = Math.round(Number(gcValue) || 0);
+
+  if (!vlhRules.length || gc <= 0) {
+    return 0;
+  }
+
+  const sortedRules = [...vlhRules].sort((a, b) => a.gc_threshold - b.gc_threshold);
+  const firstRule = sortedRules[0];
+
+  // Егер GC 0 емес, бірақ ең бірінші порогтан төмен болса:
+  // мысалы GC = 1–5, ал бірінші порог = 6 → бәрібір 1 работник көрсетеміз.
+  if (gc < firstRule.gc_threshold) {
+    return firstRule.workers_count;
+  }
+
+  let workers = 0;
+
+  sortedRules.forEach((rule) => {
+    if (gc >= rule.gc_threshold) {
+      workers = rule.workers_count;
+    }
+  });
+
+  return workers;
+}
 
   function getTodayInputDate() {
     const date = new Date();
@@ -92,7 +146,6 @@ function initDashboardView() {
       hourlyTable.classList.remove("is-selecting");
     }
 
-    // Кнопкаларды жасырмаймыз. HTML-де олар постоянно көрініп тұрсын.
     if (selectedActions) {
       selectedActions.style.display = "flex";
     }
@@ -180,8 +233,6 @@ function initDashboardView() {
 
     const column = cell.dataset.column;
 
-    // Бір уақытта тек бір столбец выделить етеміз.
-    // Excel-ге баған ретінде таза түсу үшін осылай дұрыс.
     if (column !== selection.column) return;
 
     selection.endIndex = Number(cell.dataset.rowIndex);
@@ -190,24 +241,24 @@ function initDashboardView() {
   }
 
   function stopCellSelection() {
-  const wasSelecting = selection.active;
+    const wasSelecting = selection.active;
 
-  selection.active = false;
+    selection.active = false;
 
-  if (hourlyTable) {
-    hourlyTable.classList.remove("is-selecting");
+    if (hourlyTable) {
+      hourlyTable.classList.remove("is-selecting");
+    }
+
+    const selectedCells = getSelectedCells();
+
+    if (!wasSelecting || !selectedCells.length) return;
+
+    clearTimeout(autoCopyTimer);
+
+    autoCopyTimer = setTimeout(() => {
+      copySelectedCells();
+    }, 80);
   }
-
-  const selectedCells = getSelectedCells();
-
-  if (!wasSelecting || !selectedCells.length) return;
-
-  clearTimeout(autoCopyTimer);
-
-  autoCopyTimer = setTimeout(() => {
-    copySelectedCells();
-  }, 80);
-}
 
   function buildSelectedText() {
     const selectedCells = getSelectedCells();
@@ -228,7 +279,8 @@ function initDashboardView() {
       hour: "Час",
       plan_to: "ТО",
       plan_gc: "GC",
-      plan_avg_check: "Ср. чек"
+      plan_avg_check: "Ср. чек",
+      workers_count: "Работники"
     };
 
     return labels[column] || "Столбец";
@@ -321,6 +373,7 @@ function initDashboardView() {
         const planTo = Math.round(Number(row.plan_to) || 0);
         const planGc = Math.round(Number(row.plan_gc) || 0);
         const avgCheck = Math.round(Number(row.plan_avg_check) || 0);
+        const workersCount = getWorkersCountByGc(planGc);
 
         return `
           <tr>
@@ -362,6 +415,16 @@ function initDashboardView() {
               data-copy-value="${avgCheck}"
             >
               ${formatNumber(avgCheck)}
+            </td>
+
+            <td
+              class="selectable-cell"
+              data-row-index="${index}"
+              data-column="workers_count"
+              data-hour="${row.hour}"
+              data-copy-value="${workersCount}"
+            >
+              ${formatNumber(workersCount)}
             </td>
           </tr>
         `;
@@ -408,6 +471,8 @@ function initDashboardView() {
 
     setStatus(`План найден: ${dailyPlan.day_name || date}`, "success");
 
+    await loadVlhRules();
+
     const { data: hourlyPlans, error: hourlyError } = await db
       .from("hourly_plans")
       .select("*")
@@ -448,14 +513,15 @@ function initDashboardView() {
       moveCellSelection(cell);
     });
 
-//    hourlyTable.addEventListener("dblclick", (event) => {
-//      const cell = event.target.closest(".selectable-cell");
-
-//      if (!cell) return;
-
-//      event.preventDefault();
-//      copySingleCell(cell);
-//   });
+    // Қаласаң кейін double click copy қайтарып қосамыз.
+    // hourlyTable.addEventListener("dblclick", (event) => {
+    //   const cell = event.target.closest(".selectable-cell");
+    //
+    //   if (!cell) return;
+    //
+    //   event.preventDefault();
+    //   copySingleCell(cell);
+    // });
   }
 
   document.addEventListener("mouseup", stopCellSelection);
@@ -472,10 +538,6 @@ function initDashboardView() {
     event.preventDefault();
     copySelectedCells();
   });
-
-  // if (copySelectedBtn) {
-  //   copySelectedBtn.addEventListener("click", copySelectedCells);
-  // }
 
   if (clearSelectionBtn) {
     clearSelectionBtn.addEventListener("click", () => {

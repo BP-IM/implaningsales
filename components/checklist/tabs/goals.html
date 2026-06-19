@@ -1,0 +1,64 @@
+<div class="goals-tab">
+  <div class="goals-table-scroll">
+    <table class="goals-excel-table" id="goalsTable">
+      <colgroup>
+        <col class="goals-col-metric" />
+        <col class="goals-col-value" />
+        <col class="goals-col-value" />
+        <col class="goals-col-value" />
+        <col class="goals-col-percent" />
+        <col class="goals-col-reason" />
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th class="goals-main-title" colspan="6">ЦЕЛИ НА ТЕКУЩИЙ ДЕНЬ</th>
+        </tr>
+
+        <tr>
+          <th class="goals-sub-title" colspan="6">
+            ЦЕЛИ НА ДЕНЬ
+            <span>(учитывайте приоритеты ресторана, план действий PACE\Обейя):</span>
+          </th>
+        </tr>
+
+        <tr>
+          <th></th>
+          <th>Результат за предыдущий день</th>
+          <th>Цели на текущий день</th>
+          <th>Результат за текущий день</th>
+          <th class="goals-percent-title">%</th>
+          <th>
+            Выполнение цели:
+            <small>(в случае невыполнения цели описываем причины)</small>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody id="goalsBody">
+        <tr>
+          <td colspan="6">Загрузка...</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="goals-priorities">
+      <div class="goals-priorities-title">ЦЕЛИ НА ДЕНЬ</div>
+
+      <div class="goals-priority-block">
+        <div class="goals-priority-title">Приоритет 1</div>
+        <textarea id="goalPriority1" class="goals-priority-input"></textarea>
+      </div>
+
+      <div class="goals-priority-block">
+        <div class="goals-priority-title">Приоритет 2</div>
+        <textarea id="goalPriority2" class="goals-priority-input"></textarea>
+      </div>
+
+      <div class="goals-priority-block">
+        <div class="goals-priority-title">Приоритет 3</div>
+        <textarea id="goalPriority3" class="goals-priority-input"></textarea>
+      </div>
+    </div>
+  </div>
+</div>

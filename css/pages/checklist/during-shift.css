@@ -1,0 +1,147 @@
+.during-shift-tab {
+  width: 100%;
+}
+
+.during-shift-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.during-shift-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+}
+
+.during-shift-excel-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.during-shift-excel-table th,
+.during-shift-excel-table td {
+  border: 1px solid #000000;
+  padding: 3px 5px;
+  vertical-align: top;
+}
+
+.during-shift-excel-table th {
+  font-weight: 900;
+  text-align: center;
+}
+
+.during-main-title {
+  height: 42px;
+  background: #ffc000;
+  color: #000000;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.during-col-small {
+  width: 48px;
+}
+
+.during-col-task {
+  width: auto;
+}
+
+.during-category {
+  background: #fff2cc;
+  text-align: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.during-category.warning {
+  background: #ffc000;
+  font-size: 24px;
+}
+
+.during-task-text {
+  min-height: 24px;
+  font-weight: 500;
+}
+
+.during-task-text.important {
+  color: #e00000;
+  font-weight: 900;
+}
+
+.during-check-cell {
+  height: 25px;
+  text-align: center;
+  vertical-align: middle !important;
+  cursor: pointer;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 900;
+  user-select: none;
+}
+
+.during-check-cell:hover {
+  background: #f3f4f6;
+}
+
+.during-check-cell.checked {
+  color: #111827;
+}
+
+.during-check-cell.checked::after {
+  content: "✓";
+}
+
+.during-todo-block {
+  min-width: 1120px;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  background: #ffffff;
+}
+
+.during-todo-title {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff2cc;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-size: 24px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.during-todo-input {
+  width: 100%;
+  min-height: 360px;
+  border: none;
+  outline: none;
+  resize: vertical;
+  padding: 10px;
+  box-sizing: border-box;
+  color: #000000;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.during-todo-input:focus {
+  background: #fffde7;
+}
+
+@media (max-width: 900px) {
+  .during-shift-excel-table,
+  .during-todo-block {
+    min-width: 1120px;
+  }
+}

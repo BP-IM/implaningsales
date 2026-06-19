@@ -11,6 +11,13 @@
   <link rel="stylesheet" href="../css/pages/planning.css" />
   <link rel="stylesheet" href="../css/pages/export.css" />
   <link rel="stylesheet" href="../css/pages/settings.css" />
+  <link rel="stylesheet" href="../css/pages/checklist.css" />
+  <link rel="stylesheet" href="../css/pages/checklist/preparation.css" />
+  <link rel="stylesheet" href="../css/pages/checklist/goals.css" />
+  <link rel="stylesheet" href="../css/pages/checklist/during-shift.css" />
+  <link rel="stylesheet" href="../css/pages/checklist/hourly.css" />
+  <link rel="stylesheet" href="../css/pages/checklist/after-shift.css" />
+  <link rel="stylesheet" href="../css/pages/checklist-pdf.css" />
 </head>
 <body>
   <div class="app-layout">
@@ -49,6 +56,11 @@
           <a class="sidebar-link" href="#planning" data-view="planning">
             <span>📅</span>
             Планирование
+          </a>
+
+          <a class="sidebar-link" href="#checklist" data-view="checklist">
+            <span>✅</span>
+            Чек-лист смены
           </a>
 
           <a class="sidebar-link" href="#settings" data-view="settings">
@@ -94,6 +106,23 @@
     <script src="../js/export-page.js"></script>
     <script src="../js/settings-page.js"></script>
     <script src="../js/dashboard-page.js"></script>
+    <script src="../js/checklist/tabs/preparation.js"></script>
+    <script src="../js/checklist/tabs/goals-daily-plans-api.js"></script>
+    <script src="../js/checklist/tabs/goals.js"></script>
+    <script src="../js/checklist/tabs/during-shift.js"></script>
+    <script src="../js/checklist/tabs/hourly-plans-api.js"></script>
+    <script src="../js/checklist/tabs/hourly.js"></script>
+    <script src="../js/checklist/tabs/hourly-calculations.js"></script>
+    <script src="../js/checklist/tabs/hourly-night-rules.js"></script>
+    <script src="../js/checklist/tabs/goals-hourly-sync.js"></script>
+    <script src="../js/checklist/tabs/goals-previous-day-sync.js"></script>
+    <script src="../js/checklist/tabs/after-shift.js"></script>
+    <script src="../js/checklist/checklist-store.js"></script>
+    <script src="../js/checklist/checklist-page.js"></script>
     <script src="../js/sidebar.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../js/checklist/checklist-pdf.js"></script>
 </body>
 </html>

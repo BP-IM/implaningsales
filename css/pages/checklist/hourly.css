@@ -1,0 +1,195 @@
+.hourly-tab {
+  width: 100%;
+}
+
+.hourly-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+}
+
+.hourly-block {
+  min-width: 1280px;
+  margin-bottom: 0;
+  background: #ffffff;
+}
+
+.hourly-excel-table {
+  width: 100%;
+  min-width: 1280px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.hourly-excel-table th,
+.hourly-excel-table td {
+  border: 1px solid #000000;
+  padding: 3px 4px;
+  vertical-align: middle;
+}
+
+.hourly-excel-table th {
+  font-weight: 900;
+  text-align: center;
+}
+
+.hourly-main-title {
+  height: 34px;
+  background: #ffc000;
+  color: #000000;
+  font-size: 24px;
+  font-weight: 500 !important;
+}
+
+.hourly-group-title {
+  background: #ffffff;
+  font-weight: 900;
+  text-align: center;
+}
+
+.hourly-sub-title {
+  background: #ffffff;
+  font-weight: 500 !important;
+  text-align: center;
+}
+
+.hourly-time-col {
+  width: 65px;
+}
+
+.hourly-small-col {
+  width: 48px;
+}
+
+.hourly-medium-col {
+  width: 86px;
+}
+
+.hourly-wide-col {
+  width: 135px;
+}
+
+.hourly-time-cell {
+  font-weight: 500;
+  text-align: left;
+}
+
+.hourly-plan-cell {
+  background: #ffff00;
+}
+
+.hourly-fact-cell {
+  background: #9ed3df;
+}
+
+.hourly-avcheck-cell {
+  background: #ddd9e8;
+}
+
+.hourly-gcpch-cell {
+  background: #f8cbad;
+}
+
+.hourly-oepe-cell {
+  background: #9ed3df;
+}
+
+.hourly-total-row td {
+  background: #92d050;
+  font-weight: 500;
+}
+
+.hourly-excel-table input {
+  width: 100%;
+  height: 24px;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  padding: 0 3px;
+  box-sizing: border-box;
+}
+
+.hourly-excel-table input:focus {
+  background: #fffde7;
+}
+
+.hourly-status-title {
+  min-width: 1280px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffc000;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hourly-priority-row {
+  min-width: 1280px;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  min-height: 56px;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  background: #ffffff;
+}
+
+.hourly-priority-label {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 5px;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hourly-priority-input {
+  width: 100%;
+  min-height: 56px;
+  border: none;
+  border-left: 1px solid #000000;
+  outline: none;
+  resize: vertical;
+  color: #000000;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.hourly-priority-input:focus {
+  background: #fffde7;
+}
+
+.hourly-loading {
+  min-width: 1280px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #000000;
+  color: #000000;
+}
+
+@media (max-width: 900px) {
+  .hourly-block,
+  .hourly-excel-table,
+  .hourly-status-title,
+  .hourly-priority-row,
+  .hourly-loading {
+    min-width: 1280px;
+  }
+}

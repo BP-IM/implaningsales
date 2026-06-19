@@ -1,0 +1,60 @@
+<div class="after-shift-tab">
+  <div class="after-shift-actions">
+    <button class="secondary-btn" id="afterShiftSelectAllBtn" type="button">
+      Выбрать все
+    </button>
+
+    <button class="secondary-btn" id="afterShiftClearAllBtn" type="button">
+      Снять все
+    </button>
+  </div>
+
+  <div class="after-shift-table-scroll">
+    <table class="after-shift-excel-table" id="afterShiftTable">
+      <colgroup>
+        <col class="after-col-small" />
+        <col class="after-col-small" />
+        <col class="after-col-task" />
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th class="after-main-title" colspan="3">ПОСЛЕ СМЕНЫ</th>
+        </tr>
+      </thead>
+
+      <tbody id="afterShiftBody">
+        <tr>
+          <td colspan="3">Загрузка...</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="after-priorities">
+      <div class="after-priorities-main-title">
+        ИТОГИ ДНЯ (по приоритетам)
+      </div>
+
+      <div class="after-priority-block">
+        <div class="after-priority-title">
+          Приоритет 1 (если выполнено, то каким образом\если не выполнено, то причина)
+        </div>
+        <textarea id="afterPriority1" class="after-priority-input"></textarea>
+      </div>
+
+      <div class="after-priority-block">
+        <div class="after-priority-title">
+          Приоритет 2 (если выполнено, то каким образом\если не выполнено, то причина)
+        </div>
+        <textarea id="afterPriority2" class="after-priority-input"></textarea>
+      </div>
+
+      <div class="after-priority-block">
+        <div class="after-priority-title">
+          Приоритет 3 (если выполнено, то каким образом\если не выполнено, то причина)
+        </div>
+        <textarea id="afterPriority3" class="after-priority-input"></textarea>
+      </div>
+    </div>
+  </div>
+</div>

@@ -48,6 +48,17 @@ const views = {
     }
   },
 
+  checklist: {
+    title: "Чек-лист смены",
+    subtitle: "Контроль задач менеджера смены по выбранной дате",
+    component: "../components/checklist/checklist-view.html",
+    init: () => {
+      if (typeof initChecklistPage === "function") {
+        initChecklistPage();
+      }
+    }
+  },
+
   settings: {
     title: "Настройки",
     subtitle: "Коэффициенты по дням недели и по часам",

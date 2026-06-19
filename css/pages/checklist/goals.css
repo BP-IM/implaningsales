@@ -1,0 +1,180 @@
+.goals-tab {
+  width: 100%;
+}
+
+.goals-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+}
+
+.goals-excel-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.goals-excel-table th,
+.goals-excel-table td {
+  border: 1px solid #000000;
+  padding: 4px 5px;
+  vertical-align: middle;
+}
+
+.goals-excel-table th {
+  font-weight: 900;
+  text-align: center;
+}
+
+.goals-main-title {
+  height: 45px;
+  background: #ffc000;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.goals-sub-title {
+  height: 36px;
+  background: #fff2cc;
+  font-size: 24px;
+  text-align: left !important;
+  padding-left: 95px !important;
+}
+
+.goals-sub-title span {
+  font-weight: 500;
+}
+
+.goals-excel-table thead tr:nth-child(3) th {
+  background: #fff2cc;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.goals-excel-table thead tr:nth-child(3) th small {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.goals-col-metric {
+  width: 165px;
+}
+
+.goals-col-value {
+  width: 245px;
+}
+
+.goals-col-percent {
+  width: 60px;
+}
+
+.goals-col-reason {
+  width: 210px;
+}
+
+.goals-metric-name {
+  font-weight: 900;
+}
+
+.goals-excel-table input,
+.goals-excel-table textarea {
+  width: 100%;
+  min-height: 26px;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  text-align: center;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.goals-excel-table textarea {
+  min-height: 28px;
+  resize: vertical;
+  text-align: left;
+  padding: 4px;
+}
+
+.goals-excel-table input:focus,
+.goals-excel-table textarea:focus {
+  background: #fffde7;
+}
+
+.goals-tall-row td {
+  height: 72px;
+}
+
+.goals-priorities {
+  min-width: 1120px;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  background: #ffffff;
+}
+
+.goals-priorities-title {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffc000;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-size: 30px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.goals-priority-title {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff2cc;
+  border-bottom: 1px solid #000000;
+  color: #000000;
+  font-size: 22px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.goals-priority-input {
+  width: 100%;
+  min-height: 86px;
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
+  resize: vertical;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.goals-priority-input:focus {
+  background: #fffde7;
+}
+
+@media (max-width: 900px) {
+  .goals-excel-table,
+  .goals-priorities {
+    min-width: 1120px;
+  }
+}
+
+.goals-percent-title {
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+}
