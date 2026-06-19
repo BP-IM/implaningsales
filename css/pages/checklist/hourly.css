@@ -193,3 +193,70 @@
     min-width: 1280px;
   }
 }
+
+/* =========================
+   HOURLY TEXTAREA AUTO HEIGHT
+========================= */
+
+.hourly-tab textarea,
+.hourly-excel-table textarea {
+  width: 100%;
+  min-height: 42px;
+  height: auto;
+  overflow: hidden;
+  resize: none;
+  line-height: 1.25;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+.hourly-excel-table tr,
+.hourly-excel-table td {
+  height: auto !important;
+  vertical-align: top;
+}
+
+/* =========================
+   HOURLY PRIORITY AUTO HEIGHT
+========================= */
+
+.hourly-priority-input {
+  width: 100%;
+  min-height: 42px;
+  height: auto;
+  overflow: hidden;
+  resize: none;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+
+.hourly-priority-row {
+  align-items: stretch;
+}
+
+/* =========================
+   HOURLY CHANNEL WORK HOURS
+========================= */
+
+.hourly-disabled-by-rule {
+  background: #e5e7eb !important;
+  color: #6b7280 !important;
+  cursor: not-allowed !important;
+  font-weight: 700;
+}
+
+.hourly-disabled-by-rule::placeholder {
+  color: #6b7280;
+  opacity: 1;
+  font-weight: 700;
+}
+
+.hourly-row-closed td,
+.hourly-row-closed input {
+  background: #e5e7eb !important;
+}
+
+.hourly-row-closed .hourly-time-cell {
+  background: #d1d5db !important;
+  font-weight: 900;
+}

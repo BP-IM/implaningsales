@@ -1,15 +1,122 @@
 (function () {
-  const NIGHT_RULES = {
-    "00-01": ["counter", "drive", "kiosk", "delivery"],
+  const HOURS = [
+    "00-01",
+    "01-02",
+    "02-03",
+    "03-04",
+    "04-05",
+    "05-06",
+    "06-07",
+    "07-08",
+    "08-09",
+    "09-10",
+    "10-11",
+    "11-12",
+    "12-13",
+    "13-14",
+    "14-15",
+    "15-16",
+    "16-17",
+    "17-18",
+    "18-19",
+    "19-20",
+    "20-21",
+    "21-22",
+    "22-23",
+    "23-00",
+  ];
 
-    "01-02": ["drive", "delivery"],
-    "02-03": ["drive", "delivery"],
-    "03-04": ["drive", "delivery"],
+  const DEFAULT_CHANNEL_WORK_HOURS = {
+    drive: [
+      "05-06",
+      "06-07",
+      "07-08",
+      "08-09",
+      "09-10",
+      "10-11",
+      "11-12",
+      "12-13",
+      "13-14",
+      "14-15",
+      "15-16",
+      "16-17",
+      "17-18",
+      "18-19",
+      "19-20",
+      "20-21",
+      "21-22",
+      "22-23",
+      "23-00",
+      "00-01",
+      "01-02",
+      "02-03",
+      "03-04",
+    ],
 
-    "04-05": [],
+    delivery: [
+      "07-08",
+      "08-09",
+      "09-10",
+      "10-11",
+      "11-12",
+      "12-13",
+      "13-14",
+      "14-15",
+      "15-16",
+      "16-17",
+      "17-18",
+      "18-19",
+      "19-20",
+      "20-21",
+      "21-22",
+      "22-23",
+      "23-00",
+      "00-01",
+      "01-02",
+      "02-03",
+      "03-04",
+    ],
 
-    "05-06": ["drive"],
-    "06-07": ["drive"],
+    kiosk: [
+      "07-08",
+      "08-09",
+      "09-10",
+      "10-11",
+      "11-12",
+      "12-13",
+      "13-14",
+      "14-15",
+      "15-16",
+      "16-17",
+      "17-18",
+      "18-19",
+      "19-20",
+      "20-21",
+      "21-22",
+      "22-23",
+      "23-00",
+    ],
+
+    counter: [
+      "07-08",
+      "08-09",
+      "09-10",
+      "10-11",
+      "11-12",
+      "12-13",
+      "13-14",
+      "14-15",
+      "15-16",
+      "16-17",
+      "17-18",
+      "18-19",
+      "19-20",
+      "20-21",
+      "21-22",
+      "22-23",
+      "23-00",
+      "00-01",
+    ],
   };
 
   const CHANNELS = {
@@ -17,27 +124,42 @@
       planField: "counterPlan",
       factField: "counterFact",
       percentKey: "cPercent",
-      title: "C / касса закрыта в это время",
+      title: "C / касса не работает в это время",
     },
     drive: {
       planField: "drivePlan",
       factField: "driveFact",
       percentKey: "dtPercent",
-      title: "Drive",
+      title: "Drive не работает в это время",
     },
     kiosk: {
       planField: "kioskPlan",
       factField: "kioskFact",
       percentKey: "kiosksPercent",
-      title: "Киоски закрыты в это время",
+      title: "Киоски не работают в это время",
     },
     delivery: {
       planField: "deliveryPlan",
       factField: "deliveryFact",
       percentKey: "dlvPercent",
-      title: "Delivery",
+      title: "Delivery не работает в это время",
     },
   };
+
+  const AUTO_READONLY_FIELDS = new Set([
+    "totalPlan",
+    "totalFact",
+    "sandwichPlan",
+    "salesPlan",
+    "avgCheck",
+  ]);
+
+  const EDITABLE_FIELDS_WHEN_OPEN = new Set([
+    "sandwichFact",
+    "salesFact",
+    "gcpch",
+    "oepe",
+  ]);
 
   let applying = false;
 
@@ -72,8 +194,61 @@
     return row.querySelector(`[data-field="${field}"]`);
   }
 
-  function getNightBlock() {
-    return document.querySelector('[data-hourly-block="night"]');
+  function getRestaurantId() {
+    return (
+      window.currentRestaurantId ||
+      window.restaurantId ||
+      window.APP_RESTAURANT_ID ||
+      localStorage.getItem("restaurant_id") ||
+      localStorage.getItem("restaurantId") ||
+      ""
+    );
+  }
+
+  function getScopedLocalStorageKey() {
+    const restaurantId = getRestaurantId();
+    return restaurantId ? `channel_work_hours_${restaurantId}` : "";
+  }
+
+  function cloneDefaultChannelWorkHours() {
+    return JSON.parse(JSON.stringify(DEFAULT_CHANNEL_WORK_HOURS));
+  }
+
+  function normalizeChannelWorkHours(value = {}) {
+    const source = value && typeof value === "object" ? value : {};
+
+    return {
+      counter: Array.isArray(source.counter)
+        ? source.counter.filter((hour) => HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.counter],
+      drive: Array.isArray(source.drive)
+        ? source.drive.filter((hour) => HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.drive],
+      kiosk: Array.isArray(source.kiosk)
+        ? source.kiosk.filter((hour) => HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.kiosk],
+      delivery: Array.isArray(source.delivery)
+        ? source.delivery.filter((hour) => HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.delivery],
+    };
+  }
+
+  function getChannelWorkHours() {
+    try {
+      const scopedKey = getScopedLocalStorageKey();
+      const scopedSaved = scopedKey ? localStorage.getItem(scopedKey) : "";
+      const commonSaved = localStorage.getItem("channel_work_hours");
+      const saved = scopedSaved || commonSaved;
+
+      if (!saved) {
+        return cloneDefaultChannelWorkHours();
+      }
+
+      return normalizeChannelWorkHours(JSON.parse(saved));
+    } catch (error) {
+      console.warn("Ошибка чтения channel_work_hours:", error);
+      return cloneDefaultChannelWorkHours();
+    }
   }
 
   function getGoalsPercents() {
@@ -103,25 +278,66 @@
     return true;
   }
 
-  function setDisabled(input, disabled, title = "") {
+  function rememberValueBeforeRule(input) {
     if (!input) return;
 
-    input.readOnly = disabled;
-    input.disabled = false;
+    if (input.dataset.ruleHasOriginal === "true") return;
 
-    input.classList.toggle("hourly-disabled-by-rule", disabled);
-
-    if (disabled) {
-      input.title = title || "Не работает в это время";
-      input.tabIndex = -1;
-    } else {
-      input.title = "";
-      input.removeAttribute("tabindex");
-    }
+    input.dataset.ruleHasOriginal = "true";
+    input.dataset.ruleOriginalValue = input.value || "";
   }
 
-  function getActiveChannelsForHour(hour) {
-    return NIGHT_RULES[hour] || ["counter", "drive", "kiosk", "delivery"];
+  function restoreValueAfterRule(input) {
+    if (!input) return;
+
+    if (input.dataset.ruleHasOriginal !== "true") return;
+
+    if (!input.value) {
+      input.value = input.dataset.ruleOriginalValue || "";
+    }
+
+    delete input.dataset.ruleHasOriginal;
+    delete input.dataset.ruleOriginalValue;
+  }
+
+  function disableCell(input, title = "") {
+    if (!input) return;
+
+    rememberValueBeforeRule(input);
+
+    input.disabled = false;
+    input.readOnly = true;
+    input.classList.add("hourly-disabled-by-rule");
+    input.value = "";
+    input.placeholder = "N/A";
+    input.title = title || "Не работает в это время";
+    input.tabIndex = -1;
+  }
+
+  function enableCell(input, options = {}) {
+    if (!input) return;
+
+    const readOnly = Boolean(options.readOnly);
+    const title = options.title || "";
+
+    input.disabled = false;
+    input.readOnly = readOnly;
+    input.classList.remove("hourly-disabled-by-rule");
+    input.placeholder = "";
+    input.title = title;
+    input.removeAttribute("tabindex");
+
+    restoreValueAfterRule(input);
+  }
+
+  function isChannelActive(channelKey, hour, settings) {
+    return settings[channelKey]?.includes(hour);
+  }
+
+  function getActiveChannelsForHour(hour, settings) {
+    return Object.keys(CHANNELS).filter((channelKey) =>
+      isChannelActive(channelKey, hour, settings)
+    );
   }
 
   function calculateChannelPlan(totalGc, activeChannels, channelKey, percents) {
@@ -138,22 +354,68 @@
       return sum + toNumber(percents[config.percentKey]);
     }, 0);
 
-    if (!activePercentSum) return "";
+    if (!activePercentSum) {
+      return totalGc / activeChannels.length;
+    }
 
     const channelPercent = toNumber(percents[CHANNELS[channelKey].percentKey]);
+
+    if (!channelPercent) {
+      return 0;
+    }
 
     return (totalGc * channelPercent) / activePercentSum;
   }
 
-  function applyNightRulesToRow(row, percents) {
+  function setWholeRowClosed(row, isClosed) {
+    row.classList.toggle("hourly-row-closed", isClosed);
+
+    [
+      "totalPlan",
+      "totalFact",
+      "sandwichPlan",
+      "sandwichFact",
+      "salesPlan",
+      "salesFact",
+      "avgCheck",
+      "gcpch",
+      "oepe",
+    ].forEach((field) => {
+      const input = getInput(row, field);
+
+      if (!input) return;
+
+      if (isClosed) {
+        disableCell(input, "Ресторан закрыт в это время");
+        return;
+      }
+
+      if (AUTO_READONLY_FIELDS.has(field)) {
+        enableCell(input, {
+          readOnly: true,
+          title: "Автоматически рассчитывается",
+        });
+        return;
+      }
+
+      if (EDITABLE_FIELDS_WHEN_OPEN.has(field)) {
+        enableCell(input, {
+          readOnly: false,
+        });
+      }
+    });
+  }
+
+  function applyChannelHoursToRow(row, settings, percents) {
     const hour = normalizeHour(
       row.querySelector(".hourly-time-cell")?.textContent || ""
     );
 
-    const activeChannels = getActiveChannelsForHour(hour);
+    const activeChannels = getActiveChannelsForHour(hour, settings);
+    const isClosed = activeChannels.length === 0;
     const totalGc = toNumber(getInput(row, "totalPlan")?.value || "");
 
-    let changed = false;
+    setWholeRowClosed(row, isClosed);
 
     Object.entries(CHANNELS).forEach(([channelKey, config]) => {
       const isActive = activeChannels.includes(channelKey);
@@ -162,17 +424,19 @@
       const factInput = getInput(row, config.factField);
 
       if (!isActive) {
-        changed = setValue(planInput, "") || changed;
-        changed = setValue(factInput, "") || changed;
-
-        setDisabled(planInput, true, config.title);
-        setDisabled(factInput, true, config.title);
-
+        disableCell(planInput, config.title);
+        disableCell(factInput, config.title);
         return;
       }
 
-      setDisabled(planInput, true, "План автоматически рассчитан");
-      setDisabled(factInput, false);
+      enableCell(planInput, {
+        readOnly: true,
+        title: "План автоматически рассчитан",
+      });
+
+      enableCell(factInput, {
+        readOnly: false,
+      });
 
       const planValue = calculateChannelPlan(
         totalGc,
@@ -181,39 +445,13 @@
         percents
       );
 
-      changed = setValue(planInput, planValue === "" ? "" : formatNumber(planValue)) || changed;
+      setValue(planInput, planValue === "" ? "" : formatNumber(planValue));
     });
-
-    if (activeChannels.length === 0) {
-      [
-        "totalFact",
-        "sandwichFact",
-        "salesFact",
-        "avgCheck",
-        "gcpch",
-        "oepe",
-      ].forEach((field) => {
-        const input = getInput(row, field);
-        changed = setValue(input, "") || changed;
-        setDisabled(input, true, "Ресторан закрыт в это время");
-      });
-    } else {
-      [
-        "sandwichFact",
-        "salesFact",
-        "gcpch",
-        "oepe",
-      ].forEach((field) => {
-        const input = getInput(row, field);
-        setDisabled(input, false);
-      });
-    }
-
-    return changed;
   }
 
   function hideNightPriorityRows() {
-    const nightBlock = getNightBlock();
+    const nightBlock = document.querySelector('[data-hourly-block="night"]');
+
     if (!nightBlock) return;
 
     const statusTitle = nightBlock.querySelector(".hourly-status-title");
@@ -233,52 +471,28 @@
     }
   }
 
-  function triggerAutosave() {
-    const firstInput =
-      getNightBlock()?.querySelector("[data-field]") ||
-      document.querySelector("[data-field]");
-
-    if (!firstInput) return;
-
-    firstInput.dispatchEvent(
-      new Event("input", {
-        bubbles: true,
-      })
-    );
-  }
-
-  function applyNightRules() {
+  function applyChannelHours() {
     if (applying) return;
 
     applying = true;
 
-    const nightBlock = getNightBlock();
-    if (!nightBlock) {
-      applying = false;
-      return;
-    }
+    const settings = getChannelWorkHours();
+    const percents = getGoalsPercents();
 
     hideNightPriorityRows();
 
-    const percents = getGoalsPercents();
-    let changed = false;
-
-    nightBlock.querySelectorAll("[data-hourly-row-key]").forEach((row) => {
-      changed = applyNightRulesToRow(row, percents) || changed;
+    document.querySelectorAll("[data-hourly-row-key]").forEach((row) => {
+      applyChannelHoursToRow(row, settings, percents);
     });
 
     triggerRecalculate();
-
-    if (changed) {
-      triggerAutosave();
-    }
 
     applying = false;
   }
 
   function patchHourlyInit() {
-    if (window.__hourlyNightRulesInitPatched) return;
-    window.__hourlyNightRulesInitPatched = true;
+    if (window.__hourlyChannelHoursInitPatched) return;
+    window.__hourlyChannelHoursInitPatched = true;
 
     const originalInit = window.initChecklistHourlyTab;
 
@@ -287,40 +501,44 @@
     window.initChecklistHourlyTab = async function patchedHourlyInit(context = {}) {
       const result = await originalInit(context);
 
-      setTimeout(applyNightRules, 100);
-      setTimeout(applyNightRules, 500);
-      setTimeout(applyNightRules, 1000);
+      setTimeout(applyChannelHours, 100);
+      setTimeout(applyChannelHours, 500);
+      setTimeout(applyChannelHours, 1000);
 
       return result;
     };
   }
 
   function bindEvents() {
-    if (window.__hourlyNightRulesEventsBound) return;
-    window.__hourlyNightRulesEventsBound = true;
+    if (window.__hourlyChannelHoursEventsBound) return;
+    window.__hourlyChannelHoursEventsBound = true;
 
     window.addEventListener("checklist:goals-percent-changed", () => {
-      setTimeout(applyNightRules, 0);
+      setTimeout(applyChannelHours, 0);
     });
 
     window.addEventListener("checklist:date-changed", () => {
-      setTimeout(applyNightRules, 500);
+      setTimeout(applyChannelHours, 500);
+    });
+
+    window.addEventListener("checklist:channel-hours-changed", () => {
+      setTimeout(applyChannelHours, 0);
     });
 
     document.addEventListener("input", (event) => {
       const input = event.target;
 
-      if (!input.matches('[data-hourly-block="night"] [data-field]')) return;
+      if (!input.matches("[data-hourly-row-key] [data-field]")) return;
       if (input.classList.contains("hourly-disabled-by-rule")) return;
 
-      setTimeout(applyNightRules, 0);
+      setTimeout(applyChannelHours, 0);
     });
   }
 
   function init() {
     patchHourlyInit();
     bindEvents();
-    setTimeout(applyNightRules, 300);
+    setTimeout(applyChannelHours, 300);
   }
 
   if (document.readyState === "loading") {
@@ -329,7 +547,14 @@
     init();
   }
 
+  window.ChecklistHourlyChannelHours = {
+    HOURS,
+    DEFAULT_CHANNEL_WORK_HOURS,
+    getChannelWorkHours,
+    applyChannelHours,
+  };
+
   window.ChecklistHourlyNightRules = {
-    applyNightRules,
+    applyNightRules: applyChannelHours,
   };
 })();

@@ -45,6 +45,130 @@ const DEFAULT_WORKING_HOURS = {
   "23:00": true
 };
 
+const CHANNEL_HOURS = [
+  "00-01",
+  "01-02",
+  "02-03",
+  "03-04",
+  "04-05",
+  "05-06",
+  "06-07",
+  "07-08",
+  "08-09",
+  "09-10",
+  "10-11",
+  "11-12",
+  "12-13",
+  "13-14",
+  "14-15",
+  "15-16",
+  "16-17",
+  "17-18",
+  "18-19",
+  "19-20",
+  "20-21",
+  "21-22",
+  "22-23",
+  "23-00"
+];
+
+const DEFAULT_CHANNEL_WORK_HOURS = {
+  drive: [
+    "05-06",
+    "06-07",
+    "07-08",
+    "08-09",
+    "09-10",
+    "10-11",
+    "11-12",
+    "12-13",
+    "13-14",
+    "14-15",
+    "15-16",
+    "16-17",
+    "17-18",
+    "18-19",
+    "19-20",
+    "20-21",
+    "21-22",
+    "22-23",
+    "23-00",
+    "00-01",
+    "01-02",
+    "02-03",
+    "03-04"
+  ],
+  delivery: [
+    "07-08",
+    "08-09",
+    "09-10",
+    "10-11",
+    "11-12",
+    "12-13",
+    "13-14",
+    "14-15",
+    "15-16",
+    "16-17",
+    "17-18",
+    "18-19",
+    "19-20",
+    "20-21",
+    "21-22",
+    "22-23",
+    "23-00",
+    "00-01",
+    "01-02",
+    "02-03",
+    "03-04"
+  ],
+  kiosk: [
+    "07-08",
+    "08-09",
+    "09-10",
+    "10-11",
+    "11-12",
+    "12-13",
+    "13-14",
+    "14-15",
+    "15-16",
+    "16-17",
+    "17-18",
+    "18-19",
+    "19-20",
+    "20-21",
+    "21-22",
+    "22-23",
+    "23-00"
+  ],
+  counter: [
+    "07-08",
+    "08-09",
+    "09-10",
+    "10-11",
+    "11-12",
+    "12-13",
+    "13-14",
+    "14-15",
+    "15-16",
+    "16-17",
+    "17-18",
+    "18-19",
+    "19-20",
+    "20-21",
+    "21-22",
+    "22-23",
+    "23-00",
+    "00-01"
+  ]
+};
+
+const CHANNEL_LABELS = {
+  drive: "Drive",
+  delivery: "Delivery",
+  kiosk: "Киоски",
+  counter: "C / Касса"
+};
+
 const DEFAULT_VLH_RULES = [
   { gc_threshold: 6, workers_count: 1 },
   { gc_threshold: 11, workers_count: 2 },
@@ -92,12 +216,18 @@ function initSettingsForm() {
   const holidayBody = document.getElementById("holidayBody");
   const workingHoursBody = document.getElementById("workingHoursBody");
   const vlhRulesBody = document.getElementById("vlhRulesBody");
+  const channelHoursGrid = document.getElementById("channelHoursGrid");
+  const channelHoursStatus = document.getElementById("channelHoursStatus");
+  const channelTabButtons = document.querySelectorAll("[data-channel-tab]");
 
   const addHolidayBtn = document.getElementById("addHolidayBtn");
   const addVlhRowBtn = document.getElementById("addVlhRowBtn");
   const loadDefaultVlhBtn = document.getElementById("loadDefaultVlhBtn");
   const saveBtn = document.getElementById("saveSettingsBtn");
   const resetBtn = document.getElementById("resetSettingsBtn");
+  const channelSelectAllBtn = document.getElementById("channelSelectAllBtn");
+  const channelClearAllBtn = document.getElementById("channelClearAllBtn");
+  const channelResetDefaultBtn = document.getElementById("channelResetDefaultBtn");
   const message = document.getElementById("settingsMessage");
 
   const tabButtons = document.querySelectorAll(".settings-tab");
@@ -109,6 +239,8 @@ function initSettingsForm() {
   if (idEl) idEl.textContent = restaurantId || "-";
 
   let vlhRules = [];
+  let activeChannel = "drive";
+  let channelWorkHours = cloneJson(DEFAULT_CHANNEL_WORK_HOURS);
 
   function showMessage(text, type = "success") {
     if (!message) return;
@@ -127,6 +259,179 @@ function initSettingsForm() {
       gc_threshold: Number(rule.gc_threshold) || 0,
       workers_count: Number(rule.workers_count) || 0
     }));
+  }
+
+  function cloneJson(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function getChannelLocalStorageKey() {
+    return restaurantId
+      ? `channel_work_hours_${restaurantId}`
+      : "channel_work_hours";
+  }
+
+  function normalizeChannelWorkHours(value = {}) {
+    const source = value && typeof value === "object" ? value : {};
+
+    return {
+      drive: Array.isArray(source.drive)
+        ? source.drive.filter((hour) => CHANNEL_HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.drive],
+      delivery: Array.isArray(source.delivery)
+        ? source.delivery.filter((hour) => CHANNEL_HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.delivery],
+      kiosk: Array.isArray(source.kiosk)
+        ? source.kiosk.filter((hour) => CHANNEL_HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.kiosk],
+      counter: Array.isArray(source.counter)
+        ? source.counter.filter((hour) => CHANNEL_HOURS.includes(hour))
+        : [...DEFAULT_CHANNEL_WORK_HOURS.counter]
+    };
+  }
+
+  function loadChannelWorkHoursFromLocalStorage() {
+    try {
+      const scopedSaved = localStorage.getItem(getChannelLocalStorageKey());
+      const commonSaved = localStorage.getItem("channel_work_hours");
+      const saved = scopedSaved || commonSaved;
+
+      if (!saved) {
+        return cloneJson(DEFAULT_CHANNEL_WORK_HOURS);
+      }
+
+      return normalizeChannelWorkHours(JSON.parse(saved));
+    } catch (error) {
+      console.warn("Ошибка загрузки channel_work_hours:", error);
+      return cloneJson(DEFAULT_CHANNEL_WORK_HOURS);
+    }
+  }
+
+  function saveChannelWorkHoursToLocalStorage() {
+    const value = JSON.stringify(channelWorkHours);
+
+    localStorage.setItem("channel_work_hours", value);
+
+    if (restaurantId) {
+      localStorage.setItem(getChannelLocalStorageKey(), value);
+    }
+
+    window.dispatchEvent(
+      new CustomEvent("checklist:channel-hours-changed", {
+        detail: {
+          channelHours: channelWorkHours
+        }
+      })
+    );
+  }
+
+  function setChannelHoursStatus(text = "") {
+    if (!channelHoursStatus) return;
+
+    channelHoursStatus.textContent = text;
+
+    if (text) {
+      setTimeout(() => {
+        if (channelHoursStatus.textContent === text) {
+          channelHoursStatus.textContent = "";
+        }
+      }, 1800);
+    }
+  }
+
+  function updateChannelTabs() {
+    channelTabButtons.forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.channelTab === activeChannel
+      );
+    });
+  }
+
+  function renderChannelHoursGrid() {
+    if (!channelHoursGrid) return;
+
+    const activeHours = channelWorkHours[activeChannel] || [];
+
+    channelHoursGrid.innerHTML = CHANNEL_HOURS
+      .map((hour) => {
+        const isActive = activeHours.includes(hour);
+
+        return `
+          <button
+            class="channel-hour-btn ${isActive ? "active" : ""}"
+            type="button"
+            data-channel-hour="${hour}"
+          >
+            ${hour}
+          </button>
+        `;
+      })
+      .join("");
+  }
+
+  function renderChannelHoursControls() {
+    updateChannelTabs();
+    renderChannelHoursGrid();
+  }
+
+  function toggleChannelHour(hour) {
+    const currentHours = new Set(channelWorkHours[activeChannel] || []);
+
+    if (currentHours.has(hour)) {
+      currentHours.delete(hour);
+    } else {
+      currentHours.add(hour);
+    }
+
+    channelWorkHours[activeChannel] = CHANNEL_HOURS.filter((item) =>
+      currentHours.has(item)
+    );
+
+    renderChannelHoursGrid();
+  }
+
+  function bindChannelHoursEvents() {
+    channelTabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeChannel = button.dataset.channelTab || "drive";
+        renderChannelHoursControls();
+      });
+    });
+
+    channelHoursGrid?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-channel-hour]");
+
+      if (!button) return;
+
+      toggleChannelHour(button.dataset.channelHour);
+    });
+
+    channelSelectAllBtn?.addEventListener("click", () => {
+      channelWorkHours[activeChannel] = [...CHANNEL_HOURS];
+      renderChannelHoursGrid();
+      setChannelHoursStatus(`${CHANNEL_LABELS[activeChannel]}: все часы выбраны`);
+    });
+
+    channelClearAllBtn?.addEventListener("click", () => {
+      channelWorkHours[activeChannel] = [];
+      renderChannelHoursGrid();
+      setChannelHoursStatus(`${CHANNEL_LABELS[activeChannel]}: часы сняты`);
+    });
+
+    channelResetDefaultBtn?.addEventListener("click", () => {
+      channelWorkHours = cloneJson(DEFAULT_CHANNEL_WORK_HOURS);
+      renderChannelHoursControls();
+      setChannelHoursStatus("График каналов сброшен по умолчанию");
+    });
+  }
+
+  function isMissingChannelHoursColumnError(error) {
+    const text = String(error?.message || error?.details || "").toLowerCase();
+
+    return text.includes("channel_work_hours") ||
+      text.includes("schema cache") ||
+      text.includes("could not find");
   }
 
   function initTabs() {
@@ -383,13 +688,15 @@ function initSettingsForm() {
       renderDayCoefficients(DEFAULT_DAY_COEFFICIENTS);
       renderHolidays([]);
       renderWorkingHours(DEFAULT_WORKING_HOURS);
+      channelWorkHours = loadChannelWorkHoursFromLocalStorage();
+      renderChannelHoursControls();
       renderVlhRules([]);
       return;
     }
 
     const { data, error } = await db
       .from("restaurant_settings")
-      .select("day_coefficients, holiday_coefficients, working_hours")
+      .select("*")
       .eq("restaurant_id", restaurantId)
       .maybeSingle();
 
@@ -401,6 +708,12 @@ function initSettingsForm() {
     renderDayCoefficients(data?.day_coefficients || DEFAULT_DAY_COEFFICIENTS);
     renderHolidays(data?.holiday_coefficients || []);
     renderWorkingHours(data?.working_hours || DEFAULT_WORKING_HOURS);
+
+    channelWorkHours = normalizeChannelWorkHours(
+      data?.channel_work_hours || loadChannelWorkHoursFromLocalStorage()
+    );
+    saveChannelWorkHoursToLocalStorage();
+    renderChannelHoursControls();
 
     await loadVlhRules();
   }
@@ -466,27 +779,58 @@ function initSettingsForm() {
     const holidayCoefficients = collectHolidays();
     const workingHours = collectWorkingHours();
 
+    channelWorkHours = normalizeChannelWorkHours(channelWorkHours);
+    saveChannelWorkHoursToLocalStorage();
+
+    const payload = {
+      restaurant_id: restaurantId,
+      day_coefficients: dayCoefficients,
+      holiday_coefficients: holidayCoefficients,
+      working_hours: workingHours,
+      channel_work_hours: channelWorkHours,
+      updated_at: new Date().toISOString()
+    };
+
+    const fallbackPayload = {
+      restaurant_id: restaurantId,
+      day_coefficients: dayCoefficients,
+      holiday_coefficients: holidayCoefficients,
+      working_hours: workingHours,
+      updated_at: payload.updated_at
+    };
+
+    let channelHoursSavedToDb = true;
+
     try {
       const { error } = await db
         .from("restaurant_settings")
-        .upsert(
-          {
-            restaurant_id: restaurantId,
-            day_coefficients: dayCoefficients,
-            holiday_coefficients: holidayCoefficients,
-            working_hours: workingHours,
-            updated_at: new Date().toISOString()
-          },
-          {
-            onConflict: "restaurant_id"
-          }
-        );
+        .upsert(payload, {
+          onConflict: "restaurant_id"
+        });
 
-      if (error) throw error;
+      if (error) {
+        if (!isMissingChannelHoursColumnError(error)) {
+          throw error;
+        }
+
+        channelHoursSavedToDb = false;
+
+        const { error: fallbackError } = await db
+          .from("restaurant_settings")
+          .upsert(fallbackPayload, {
+            onConflict: "restaurant_id"
+          });
+
+        if (fallbackError) throw fallbackError;
+      }
 
       await saveVlhRules();
 
-      showMessage("Настройки сохранены.");
+      showMessage(
+        channelHoursSavedToDb
+          ? "Настройки сохранены. График каналов сохранён."
+          : "Настройки сохранены. График каналов пока сохранён в браузере. Добавьте channel_work_hours в Supabase."
+      );
     } catch (error) {
       console.error(error);
       showMessage(error.message || "Ошибка при сохранении настроек.", "error");
@@ -500,11 +844,15 @@ function initSettingsForm() {
     renderDayCoefficients(DEFAULT_DAY_COEFFICIENTS);
     renderHolidays([]);
     renderWorkingHours(DEFAULT_WORKING_HOURS);
+    channelWorkHours = cloneJson(DEFAULT_CHANNEL_WORK_HOURS);
+    renderChannelHoursControls();
     renderVlhRules(DEFAULT_VLH_RULES);
     showMessage("Значения сброшены. Нажмите “Сохранить настройки”.");
   }
 
   initTabs();
+  bindChannelHoursEvents();
+  renderChannelHoursControls();
 
   addHolidayBtn?.addEventListener("click", () => {
     createHolidayRow({

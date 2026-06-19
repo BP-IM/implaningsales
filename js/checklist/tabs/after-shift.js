@@ -170,3 +170,45 @@
     return result;
   };
 })();
+
+/* =========================
+   AFTER SHIFT TEXTAREA AUTO HEIGHT
+========================= */
+
+function resizeAfterShiftTextarea(textarea) {
+  if (!textarea) return;
+
+  textarea.style.height = "auto";
+  textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+function initAfterShiftTextareaAutoResize() {
+  const textareas = document.querySelectorAll(
+    ".after-shift-tab textarea, .after-shift-excel-table textarea, .after-shift-summary, textarea[data-after-shift-field]"
+  );
+
+  textareas.forEach((textarea) => {
+    resizeAfterShiftTextarea(textarea);
+  });
+}
+
+document.addEventListener("input", (event) => {
+  const textarea = event.target;
+
+  if (
+    textarea.matches &&
+    textarea.matches(
+      ".after-shift-tab textarea, .after-shift-excel-table textarea, .after-shift-summary, textarea[data-after-shift-field]"
+    )
+  ) {
+    resizeAfterShiftTextarea(textarea);
+  }
+});
+
+setTimeout(initAfterShiftTextareaAutoResize, 0);
+setTimeout(initAfterShiftTextareaAutoResize, 300);
+setTimeout(initAfterShiftTextareaAutoResize, 800);
+
+window.addEventListener("checklist:date-changed", () => {
+  setTimeout(initAfterShiftTextareaAutoResize, 300);
+});

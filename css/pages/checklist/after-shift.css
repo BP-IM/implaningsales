@@ -148,3 +148,26 @@
     min-width: 1120px;
   }
 }
+
+/* =========================
+   AFTER SHIFT TEXTAREA AUTO HEIGHT
+========================= */
+
+.after-shift-tab textarea,
+.after-shift-excel-table textarea,
+.after-shift-summary,
+textarea[data-after-shift-field] {
+  width: 100%;
+  min-height: 54px;
+  height: auto;
+  overflow: hidden;
+  resize: none;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+
+.after-shift-excel-table tr,
+.after-shift-excel-table td {
+  height: auto !important;
+  vertical-align: top;
+}

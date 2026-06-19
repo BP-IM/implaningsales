@@ -729,3 +729,46 @@
     });
   }
 })();
+
+
+/* =========================
+   GOALS TEXTAREA AUTO HEIGHT
+========================= */
+
+function resizeGoalsTextarea(textarea) {
+  if (!textarea) return;
+
+  textarea.style.height = "auto";
+  textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+function initGoalsTextareaAutoResize() {
+  const textareas = document.querySelectorAll(
+    ".goals-tab textarea, .goals-excel-table textarea, .goals-priority-input, textarea[data-goals-field], textarea[data-goal-field]"
+  );
+
+  textareas.forEach((textarea) => {
+    resizeGoalsTextarea(textarea);
+  });
+}
+
+document.addEventListener("input", (event) => {
+  const textarea = event.target;
+
+  if (
+    textarea.matches &&
+    textarea.matches(
+      ".goals-tab textarea, .goals-excel-table textarea, .goals-priority-input, textarea[data-goals-field], textarea[data-goal-field]"
+    )
+  ) {
+    resizeGoalsTextarea(textarea);
+  }
+});
+
+setTimeout(initGoalsTextareaAutoResize, 0);
+setTimeout(initGoalsTextareaAutoResize, 300);
+setTimeout(initGoalsTextareaAutoResize, 800);
+
+window.addEventListener("checklist:date-changed", () => {
+  setTimeout(initGoalsTextareaAutoResize, 300);
+});

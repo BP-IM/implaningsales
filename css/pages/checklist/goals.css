@@ -178,3 +178,27 @@
   font-weight: 900 !important;
   text-align: center !important;
 }
+
+/* =========================
+   GOALS TEXTAREA AUTO HEIGHT
+========================= */
+
+.goals-tab textarea,
+.goals-excel-table textarea,
+.goals-priority-input,
+textarea[data-goals-field],
+textarea[data-goal-field] {
+  width: 100%;
+  min-height: 54px;
+  height: auto;
+  overflow: hidden;
+  resize: none;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+
+.goals-excel-table tr,
+.goals-excel-table td {
+  height: auto !important;
+  vertical-align: top;
+}

@@ -278,3 +278,93 @@
     width: 130px;
   }
 }
+
+
+/* =========================
+   CHANNEL WORK HOURS SETTINGS
+========================= */
+
+.channel-hours-settings {
+  margin-top: 18px;
+}
+
+.channel-hours-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 16px 0 12px;
+}
+
+.channel-hours-tab {
+  border: none;
+  background: #f3f4f6;
+  color: #6b7280;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.channel-hours-tab.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.channel-hours-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.channel-hours-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.channel-hour-btn {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #6b7280;
+  border-radius: 12px;
+  padding: 12px 8px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.channel-hour-btn.active {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.channel-hour-btn:not(.active) {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.channel-hours-save-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.channel-hours-status {
+  color: #16a34a;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .channel-hours-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .channel-hours-tab,
+  .channel-hour-btn {
+    font-size: 13px;
+  }
+}

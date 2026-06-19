@@ -121,6 +121,30 @@
 
     return value;
   }
+  
+  function resizeHourlyTextarea(textarea) {
+  if (!textarea) return;
+
+  textarea.style.height = "auto";
+  textarea.style.height = `${textarea.scrollHeight}px`;
+}
+
+  function initHourlyTextareaAutoResize(container = document) {
+    const textareas = container.querySelectorAll(".hourly-priority-input");
+
+      textareas.forEach((textarea) => {
+        resizeHourlyTextarea(textarea);
+
+        if (textarea.dataset.autoResizeBound === "true") return;
+
+        textarea.dataset.autoResizeBound = "true";
+
+        textarea.addEventListener("input", () => {
+          resizeHourlyTextarea(textarea);
+        });
+      });
+  }
+
 
   function getInputHtml({ field, value = "", isAutoPlan = false }) {
     const autoAttrs = isAutoPlan
@@ -349,6 +373,12 @@
         .map((block) => renderHourlyBlock(block, savedData))
         .join("")}
     `;
+    
+    initHourlyTextareaAutoResize(container);
+
+    setTimeout(() => {
+      initHourlyTextareaAutoResize(container);
+    }, 0);
 
     bindHourlyInputEvents(container);
     calculateAllTotals();

@@ -97,6 +97,51 @@
 
       <div class="worktime-grid" id="workingHoursBody"></div>
     </div>
+
+    <div class="card channel-hours-card">
+      <div class="section-head">
+        <div>
+          <h2>Рабочее время по каналам</h2>
+          <p>Выберите часы работы Drive, Delivery, киосков и кассы. Если час выключен — в почасовой будет N/A.</p>
+        </div>
+      </div>
+
+      <div class="channel-hours-tabs">
+        <button class="channel-hours-tab active" type="button" data-channel-tab="drive">
+          Drive
+        </button>
+
+        <button class="channel-hours-tab" type="button" data-channel-tab="delivery">
+          Delivery
+        </button>
+
+        <button class="channel-hours-tab" type="button" data-channel-tab="kiosk">
+          Киоски
+        </button>
+
+        <button class="channel-hours-tab" type="button" data-channel-tab="counter">
+          C / Касса
+        </button>
+      </div>
+
+      <div class="channel-hours-actions">
+        <button class="secondary-btn" id="channelSelectAllBtn" type="button">
+          Выбрать все
+        </button>
+
+        <button class="secondary-btn" id="channelClearAllBtn" type="button">
+          Снять все
+        </button>
+
+        <button class="secondary-btn" id="channelResetDefaultBtn" type="button">
+          По умолчанию
+        </button>
+
+        <span class="channel-hours-status" id="channelHoursStatus"></span>
+      </div>
+
+      <div class="channel-hours-grid" id="channelHoursGrid"></div>
+    </div>
   </div>
 
   <div class="settings-panel" id="vlhPanel">
