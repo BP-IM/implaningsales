@@ -1,0 +1,183 @@
+<section class="ecosima-page">
+  <div class="ecosima-header">
+    <div>
+      <h2>Экосима</h2>
+      <p>Раздел для хранения фото, PDF и других файлов ресторана</p>
+    </div>
+
+    <button class="ecosima-refresh-btn" type="button" id="ecosimaRefreshBtn">
+      Обновить
+    </button>
+  </div>
+
+  <div class="ecosima-upload-card">
+    <div class="ecosima-form-grid">
+      <label class="ecosima-field">
+        <span>Название</span>
+        <input
+          id="ecosimaTitle"
+          type="text"
+          placeholder="Например: фото оборудования, акт, отчет..."
+        />
+      </label>
+
+      <label class="ecosima-field">
+        <span>Раздел</span>
+        <select id="ecosimaCategory">
+          <option value="Склад">Склад</option>
+          <option value="СП">СП</option>
+          <option value="Химия">Химия</option>
+          <option value="Кухня">Кухня</option>
+          <option value="Прилавок">Прилавок</option>
+          <option value="Другое">Другое</option>
+        </select>
+      </label>
+
+      <label class="ecosima-field ecosima-field-wide">
+        <span>Описание</span>
+        <input
+          id="ecosimaDescription"
+          type="text"
+          placeholder="Краткое описание файла"
+        />
+      </label>
+    </div>
+
+    <label class="ecosima-dropzone" for="ecosimaFileInput">
+      <input
+        id="ecosimaFileInput"
+        type="file"
+        accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
+      />
+
+      <div class="ecosima-dropzone-icon">⬆️</div>
+
+      <div>
+        <strong>Выберите файл</strong>
+        <p>Поддерживаемые форматы: фото, PDF, Excel, Word. Максимальный размер — 50 MB.</p>
+      </div>
+    </label>
+
+    <div class="ecosima-upload-actions">
+      <div id="ecosimaSelectedFile" class="ecosima-selected-file">
+        Файл не выбран
+      </div>
+
+      <div class="ecosima-upload-buttons">
+        <button class="ecosima-clear-file-btn" type="button" id="ecosimaClearSelectedFileBtn">
+          Сбросить файл
+        </button>
+
+        <button class="ecosima-upload-btn" type="button" id="ecosimaUploadBtn">
+          Загрузить
+        </button>
+      </div>
+    </div>
+
+    <div id="ecosimaStatus" class="ecosima-status"></div>
+  </div>
+
+  <div class="ecosima-toolbar">
+    <input
+      id="ecosimaSearch"
+      type="text"
+      placeholder="Поиск по названию, описанию или имени файла..."
+    />
+
+    <select id="ecosimaFilter">
+      <option value="all">Все разделы</option>
+      <option value="Склад">Склад</option>
+      <option value="СП">СП</option>
+      <option value="Химия">Химия</option>
+      <option value="Кухня">Кухня</option>
+      <option value="Прилавок">Прилавок</option>
+      <option value="Другое">Другое</option>
+    </select>
+  </div>
+
+  <div id="ecosimaFilesList" class="ecosima-files-list"></div>
+
+  <div class="ecosima-modal" id="ecosimaEditModal">
+    <div class="ecosima-modal-backdrop" data-close-edit-modal></div>
+
+    <div class="ecosima-modal-card">
+      <div class="ecosima-modal-header">
+        <div>
+          <h3>Редактировать файл</h3>
+          <p id="ecosimaEditFileName">Файл</p>
+        </div>
+
+        <button class="ecosima-modal-close" type="button" data-close-edit-modal>
+          ✕
+        </button>
+      </div>
+
+      <div class="ecosima-modal-body">
+        <label class="ecosima-field">
+          <span>Название</span>
+          <input
+            id="ecosimaEditTitle"
+            type="text"
+            placeholder="Название файла"
+          />
+        </label>
+
+        <label class="ecosima-field">
+          <span>Раздел</span>
+          <select id="ecosimaEditCategory">
+            <option value="Склад">Склад</option>
+            <option value="СП">СП</option>
+            <option value="Химия">Химия</option>
+            <option value="Кухня">Кухня</option>
+            <option value="Прилавок">Прилавок</option>
+            <option value="Другое">Другое</option>
+          </select>
+        </label>
+
+        <label class="ecosima-field">
+          <span>Описание</span>
+          <textarea
+            id="ecosimaEditDescription"
+            rows="4"
+            placeholder="Краткое описание файла"
+          ></textarea>
+        </label>
+
+        <div class="ecosima-edit-file-box">
+          <label class="ecosima-edit-file-label" for="ecosimaEditFileInput">
+            <input
+              id="ecosimaEditFileInput"
+              type="file"
+              accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
+            />
+
+            <span>Заменить файл</span>
+            <small>Необязательно. Если новый файл не выбрать, старый файл останется.</small>
+          </label>
+
+          <div class="ecosima-edit-file-row">
+            <div id="ecosimaEditSelectedFile" class="ecosima-selected-file">
+              Новый файл не выбран
+            </div>
+
+            <button class="ecosima-clear-file-btn" type="button" id="ecosimaEditClearFileBtn">
+              Сбросить
+            </button>
+          </div>
+        </div>
+
+        <div id="ecosimaEditStatus" class="ecosima-status"></div>
+      </div>
+
+      <div class="ecosima-modal-actions">
+        <button class="ecosima-cancel-btn" type="button" data-close-edit-modal>
+          Отмена
+        </button>
+
+        <button class="ecosima-save-btn" type="button" id="ecosimaSaveEditBtn">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

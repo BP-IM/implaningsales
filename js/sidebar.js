@@ -59,6 +59,17 @@ const views = {
     }
   },
 
+  ecosima: {
+    title: "Экосима",
+    subtitle: "Хранение фото, PDF и файлов по ресторану",
+    component: "../components/ecosima-view.html",
+    init: () => {
+      if (typeof initEcosimaPage === "function") {
+        initEcosimaPage();
+      }
+    }
+  },
+
   settings: {
     title: "Настройки",
     subtitle: "Коэффициенты по дням недели и по часам",

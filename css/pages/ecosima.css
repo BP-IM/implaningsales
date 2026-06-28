@@ -1,0 +1,496 @@
+.ecosima-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ecosima-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ecosima-header h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.ecosima-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.ecosima-refresh-btn,
+.ecosima-upload-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 11px 16px;
+  background: #111827;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ecosima-refresh-btn:hover,
+.ecosima-upload-btn:hover {
+  opacity: 0.9;
+}
+
+.ecosima-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ecosima-upload-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.ecosima-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.ecosima-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ecosima-field-wide {
+  grid-column: 1 / -1;
+}
+
+.ecosima-field span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.ecosima-field input,
+.ecosima-field select,
+.ecosima-toolbar input,
+.ecosima-toolbar select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 14px;
+  outline: none;
+  background: #ffffff;
+  color: #111827;
+}
+
+.ecosima-field input:focus,
+.ecosima-field select:focus,
+.ecosima-toolbar input:focus,
+.ecosima-toolbar select:focus {
+  border-color: #111827;
+}
+
+.ecosima-dropzone {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 2px dashed #d1d5db;
+  border-radius: 16px;
+  padding: 18px;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ecosima-dropzone:hover {
+  border-color: #111827;
+  background: #f3f4f6;
+}
+
+.ecosima-dropzone input {
+  display: none;
+}
+
+.ecosima-dropzone-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #111827;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  flex: 0 0 auto;
+}
+
+.ecosima-dropzone strong {
+  display: block;
+  font-size: 15px;
+  color: #111827;
+}
+
+.ecosima-dropzone p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.ecosima-upload-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ecosima-selected-file {
+  color: #4b5563;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.ecosima-status {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ecosima-status.ok {
+  color: #047857;
+}
+
+.ecosima-status.error {
+  color: #dc2626;
+}
+
+.ecosima-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 12px;
+}
+
+.ecosima-files-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.ecosima-file-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 310px;
+}
+
+.ecosima-file-preview {
+  height: 150px;
+  border-radius: 14px;
+  background: #f3f4f6;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: #374151;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.ecosima-file-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ecosima-file-title {
+  font-weight: 800;
+  font-size: 15px;
+  color: #111827;
+  word-break: break-word;
+}
+
+.ecosima-file-meta {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
+.ecosima-file-desc {
+  color: #374151;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ecosima-file-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.ecosima-file-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ecosima-open-btn {
+  background: #111827;
+  color: #ffffff;
+}
+
+.ecosima-delete-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.ecosima-empty {
+  grid-column: 1 / -1;
+  padding: 32px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px dashed #d1d5db;
+  text-align: center;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .ecosima-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ecosima-form-grid,
+  .ecosima-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .ecosima-upload-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ecosima-upload-btn,
+  .ecosima-refresh-btn {
+    width: 100%;
+  }
+}
+
+/*////////////
+    модалка
+///////////*/
+.ecosima-edit-btn {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.ecosima-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+}
+
+.ecosima-modal.show {
+  display: block;
+}
+
+.ecosima-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.ecosima-modal-card {
+  position: relative;
+  width: min(520px, calc(100% - 32px));
+  margin: 70px auto;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+  overflow: hidden;
+}
+
+.ecosima-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ecosima-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.ecosima-modal-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.ecosima-modal-close {
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #111827;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ecosima-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ecosima-field textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 14px;
+  outline: none;
+  background: #ffffff;
+  color: #111827;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.ecosima-field textarea:focus {
+  border-color: #111827;
+}
+
+.ecosima-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 20px 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.ecosima-cancel-btn,
+.ecosima-save-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ecosima-cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.ecosima-save-btn {
+  background: #111827;
+  color: #ffffff;
+}
+
+.ecosima-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .ecosima-modal-card {
+    margin: 40px auto;
+  }
+
+  .ecosima-modal-actions {
+    flex-direction: column;
+  }
+
+  .ecosima-cancel-btn,
+  .ecosima-save-btn {
+    width: 100%;
+  }
+}
+
+/*косымша деды*/
+.ecosima-upload-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ecosima-clear-file-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 11px 14px;
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ecosima-clear-file-btn:hover {
+  background: #e5e7eb;
+}
+
+.ecosima-edit-file-box {
+  border: 1px dashed #d1d5db;
+  border-radius: 14px;
+  padding: 14px;
+  background: #f9fafb;
+}
+
+.ecosima-edit-file-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.ecosima-edit-file-label input {
+  display: none;
+}
+
+.ecosima-edit-file-label span {
+  font-weight: 800;
+  color: #111827;
+}
+
+.ecosima-edit-file-label small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.ecosima-edit-file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .ecosima-upload-buttons,
+  .ecosima-edit-file-row {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
